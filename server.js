@@ -57,6 +57,14 @@ app.post("/register", (req, res) => {
   app.post("/ban", (req, res)=>{
     console.log(req.body)
   })
+
+   app.get("/ban",async (req, res)=>{
+  await dbF.find({}).then(result=>{
+    res.send(result)
+  }).catch(err=>{
+    res.send(err)
+  })
+  })
   
 dbF.sendReport({id:12,reason:"flame",data:"11-12-2019"},null)
 //////////////////////Socket Io
