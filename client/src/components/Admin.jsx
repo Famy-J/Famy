@@ -15,8 +15,11 @@ export class Admin extends Component {
         this.AxiosBann = this.AxiosBann.bind(this);
         this.handlClick = this.handlClick.bind(this);
         this.changeState = this.changeState.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
-
+handleBack() {
+    this.setState({displayBann:true,displayFeedback:false})
+}
   handlClick (e){
     this.setState({displayBann:false,displayFeedback:true})
     axios({
@@ -77,8 +80,11 @@ export class Admin extends Component {
                 </div> </div> : null }
                 {this.state.displayFeedback ?
                 <div>
+                    
                     <h1 id="feed">Users Feedbacks</h1>
+                    <button id="back" onClick = { this.handleBack}>Back</button>
                     <div id="feeds">
+
                     <div id="feedhold">
                     </div>
                     <br></br>
