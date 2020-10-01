@@ -9,13 +9,14 @@ import Logo from "./components/logo.jsx";
 import Signup0 from "./components/signup0.jsx";
 import Token from "./components/token.jsx";
 import AboutUs from "./components/aboutUs.jsx";
+import Admin from "./components/Admin.jsx";
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       ID: "",
       userdata: {},
-      displaynavbar: true,
+      displaynavbar: false,
       displaylogin: false,
       displaysignup: false,
       displayshop: false,
@@ -23,7 +24,8 @@ class App extends React.Component {
       displaylogo: false,
       displaySignup0: false,
       displayToken: false,
-      displayAboutUs: true,
+      displayAboutUs: false,
+      displayAdmin: true,
     };
     this.UpdateData = this.UpdateData.bind(this);
     this.selectCharId = this.selectCharId.bind(this);
@@ -85,6 +87,7 @@ class App extends React.Component {
         ) : null}
         {this.state.displayToken ? <Token /> : null}
         {this.state.displayAboutUs ? <AboutUs /> : null}
+        {this.state.displayAdmin ? <Admin /> : null}
       </div>
     );
   }

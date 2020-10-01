@@ -67,6 +67,15 @@ app.post("/feedbacks", async (res, req) => {
   res.end();
 });
 
+app.get("/ban", async (req, res) => {
+  await dbF.Feedbacks.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 //////////////////////Socket Io
 
 const server = http.createServer(app);
