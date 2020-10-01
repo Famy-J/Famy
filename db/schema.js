@@ -1,68 +1,68 @@
 const mongoose = require("mongoose");
 
-const schemaUsers = new mongoose.Schema({ 
-    name: String,
-    password:String,
-    AccountNumber:Number,
-    email:String,
-    tokens:Number,
-    currentskin:Number,
-    friends:[{name:String,Messages:Array}],
-    invitation:[{name:String}],
-    AccountStatus:{Banned:Boolean,Reason:String,Periode:String},
-    Balance:Number
-  })
+const schemaUsers = new mongoose.Schema({
+  name: String,
+  password: String,
+  AccountNumber: Number,
+  email: String,
+  tokens: Number,
+  currentskin: Number,
+  friends: [{ name: String, Messages: Array }],
+  invitation: [{ name: String }],
+  AccountStatus: { Banned: Boolean, Reason: String, Periode: String },
+  Balance: Number,
+});
 
-  const Users= mongoose.model('Users', schemaUsers);
+const Users = mongoose.model("Users", schemaUsers);
 
-  const schemaAccountNumber=new mongoose.Schema({AccountNumber:Number})
+const schemaAccountNumber = new mongoose.Schema({ AccountNumber: Number });
 
-const AccountNumberdB=mongoose.model('AccountNumber', schemaAccountNumber);
+const AccountNumberdB = mongoose.model("AccountNumber", schemaAccountNumber);
 
-const id=new AccountNumberdB({AccountNumber:0})
+const feedbacksSchema = new mongoose.Schema({
+  feedbacks: String,
+});
+const Feedbacks = mongoose.model("Feedbacks", feedbacksSchema);
 
-const schemaBannedAccount = new mongoose.Schema({
-    id:Number,
-    reason:String,
-    date:String,
-    statu:String
-})
+const avatarSchema = mongoose.Schema({
+  name: String,
+  image: String,
+  price: Number,
+});
 
-const Reports = mongoose.model('Reports', schemaBannedAccount);
+const Avatar = mongoose.model("Avatar", avatarSchema);
 
-const report=new Reports()
-const sendReport=function(data,res){
-  var report =new Reports({id:data.id,reason:data.reason,date:data.date,statu:"pending"})
-  report.save()
-  // res.send()
-}
-
+const id = new AccountNumberdB({ AccountNumber: 0 });
 
 const registerUser = async function (data, res) {
   var AccountNumber;
   var user;
-  await Users.findOne({ name: data.name }).then((result) => {user = result;});
+  await Users.findOne({ name: data.name }).then((result) => {
+    user = result;
+  });
   if (user !== null) {
     console.log("done");
     res.send({ Registred: true });
-  }else {
-    await AccountNumberdB.find().then((data) => {AccountNumber = data[0].AccountNumber;});
+  } else {
+    await AccountNumberdB.find().then((data) => {
+      AccountNumber = data[0].AccountNumber;
+    });
 
     await AccountNumberdB.updateOne({ AccountNumber: AccountNumber + 1 });
 
     return new Users({
-        email:data.email,
+      email: data.email,
       name: data.name,
       password: data.password,
       AccountNumber: AccountNumber,
-      currentskin:"",
-      friends:[],
-      invitation:[],
-      AccountStatus:{Banned:false,Reason:"",Periode:""},
-      Balance:0
+      currentskin: "",
+      friends: [],
+      invitation: [],
+      AccountStatus: { Banned: false, Reason: "", Periode: "" },
+      Balance: 0,
     }).save((err, doc) => {
-      console.log(doc.AccountNumber)
-      res.send({id:doc.AccountNumber})
+      console.log(doc.AccountNumber);
+      res.send({ id: doc.AccountNumber });
     });
   }
 };
@@ -70,7 +70,7 @@ const registerUser = async function (data, res) {
 const loginUser = async function (data, res) {
   await Users.findOne({ name: data.name }).then((result) => {
     if (result === null) {
-      res.send({ Registred: false});
+      res.send({ Registred: false });
     } else {
       if (result.password === data.password) {
         res.send({
@@ -84,16 +84,35 @@ const loginUser = async function (data, res) {
   });
 };
 
-const updateskin=function(id,currentskin,res){
-  Users.update({AccountNumber:id},{currentskin}).then(result=>{res.send("Selected")})
+const findBalance = async function (id, res) {
+  await Users.findOne({ AccountNumber : id })
+  .then((data) => {
+    console.log(data)
+    res.send("data.data.Balance")
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};
+
+const updateTokens = function (id,Balance, res) {
+  Users.update({ AccountNumber: id }, { Balance }).then(result => 
+    {res.send("Balance updated")})
 }
+
+const updateskin = function (id, currentskin, res) {
+  Users.update({ AccountNumber: id }, { currentskin }).then((result) => {
+    res.send("Selected");
+  });
+};
 module.exports = {
   registerUser,
   loginUser,
   Users,
+  Avatar,
   id,
   updateskin,
-  sendReport,
-  report
+  Feedbacks,
+  updateTokens,
+  findBalance,
 };
-
