@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-
+import Feedback from "./feedback.jsx"
 export class Admin extends Component {
   constructor(props) {
     super(props);
@@ -109,9 +109,7 @@ export class Admin extends Component {
             <div id="feeds">
               {this.state.dataF.map((element, key) => {
                 return (
-                  <div>
-                    <div id="feedhold">{element.feedbacks}</div> <br />
-                  </div>
+                 <Feedback feedbacks={element.feedbacks}/>
                 );
               })}
             </div>
