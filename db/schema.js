@@ -25,7 +25,7 @@ const feedbacksSchema = new mongoose.Schema({
 const Feedbacks = mongoose.model("Feedbacks", feedbacksSchema);
 
 const avatarSchema = mongoose.Schema({
-  name: String,
+  avatar: String,
   image: String,
   price: Number,
 });
