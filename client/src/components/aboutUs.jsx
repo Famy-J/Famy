@@ -1,8 +1,8 @@
 import React from "react";
 import Navbar from "./navbar.jsx";
-import Linkify from "react-linkify";
 import axios from "axios";
 import { get } from "mongoose";
+import Toast from "light-toast";
 class AboutUs extends React.Component {
   constructor() {
     super();
@@ -33,8 +33,9 @@ class AboutUs extends React.Component {
       .catch((e) => {
         console.log(e);
       });
-    alert("Thank you for your feedback");
-    location.reload();
+    Toast.success("Thank you for your feedback", 2500, () => {
+      location.reload();
+    });
   }
 
   render() {
@@ -53,7 +54,6 @@ class AboutUs extends React.Component {
           <a href="https://github.com/Yassine-Knaizia">Yassine Knaizia</a>{" "}
           <br />
         </h4>
-
         <h3>Contact Us</h3>
         <input
           type="text"
