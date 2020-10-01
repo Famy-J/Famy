@@ -55,6 +55,7 @@ class Shop extends React.Component {
 
   getAvatarPrice(e) {
     var price = e.target.className('avatar_price')
+    console.log(e.target)
     this.setState({ price })
     console.log(this.state.price)
   };
@@ -67,6 +68,7 @@ class Shop extends React.Component {
         Balance: this.state.balance - this.state.price,
       }
     }).then((data) => {
+      this.props.IdA(data.data.AccountNumber)
       //save data in the database
       //   .then(item => {
       //     res.send("item saved to database");
@@ -79,8 +81,8 @@ class Shop extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="column">
+      <div className="shopBody">
+        <div className="Row">
           {this.state.avatars.map((element, key) => {
             return (
               <Avatar key={key} name={element.name} image={element.image} price={element.price} handleClick={this.getAvatarPrice} handleClick={this.updateBalance}/>

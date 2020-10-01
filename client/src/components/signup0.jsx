@@ -15,7 +15,10 @@ class Signup0 extends React.Component {
       axios({
           url: '/selectChar',
           method: 'post',
-          data:{id:this.props.id,currentskin:this.state.i}
+          data:{
+            id:this.props.id,
+            currentskin:this.state.i
+          }
         }).then((data)=>{
           console.log(data)
           this.props.login()
