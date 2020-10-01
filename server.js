@@ -7,9 +7,14 @@ const mongoose=require("mongoose")
 const socketIo = require("socket.io");
 const { random } = require('./Game/game');
 const game=require("./Game/game")
-const dbF=require("./db/schema")
+const dbF=require("./db/schema");
+const { id } = require('./db/schema');
 
+////Map Matrix
+var matrix = Array.from(Array(27), (x) => Array(30).fill(0));
 
+var playerPosition={} // i was here if i sleep  
+//////////////
 
 app.use(express.static(__dirname + '/client/dist'));
 
@@ -19,6 +24,7 @@ mongoose.connect("mongodb+srv://famy:2222@cluster0.ye5b9.gcp.mongodb.net/famy?re
 useCreateIndex: true,
 useUnifiedTopology: true 
 });
+
 
 var db = mongoose.connection;
 
@@ -30,45 +36,55 @@ db.once('open', function() {
   console.log('mongoose connected successfully');
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.post("/register", (req, res) => {
-dbF.registerUser(req.body, res)
-});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-
 app.post("/position",(req,res)=>{
   console.log(req.body)
+  playerPosition[req.body.id]=req.body.positionX+"-"+req.body.positionY+"="+req.body.Face+"?"+req.body.skin
+
+  mouve(req.body.positionX,req.body.positionY,req.body.id,res,req)
+  console.log(playerPosition)
   res.send()
 })
 
-app.post('/selectChar',(req,res)=>{
+app.post('/selectChar',(req,res)=>{ // Will Update the account skin with the selected skin from the signup0
   console.log(req.body)
-dbF.updateskin(req.body.id, req.body.currentskin, res)
-});
+dbF.updateskin(req.body.id,req.body.currentskin,res)
+})
 
-app.get('/shop', (req,res) => {
-  dbF.Avatar.find({}, (err,data) => {
-    err ? console.log(err) : res.send(data)
+app.post('/login',(req,res)=>{ //Deal with the login request to the server
+dbF.loginUser(req.body,res)
+})
+
+app.post("/register", (req, res) => {
+  dbF.registerUser(req.body,res)
+  })
+
+  app.post("/Rposition",(req,res)=>{ // Randomly Chose an empty place for the newuser in the Matrix
+    randomSpawn(req.body.id,res)
+    console.table(matrix)
   });
-});
 
-app.post('/', (req,res) => {
-  dbF.findBalance(req.body.id, res) 
-});
-
-app.post('/',(req,res)=>{
-  console.log(req.body)
-dbF.updateTokens(req.body.id, req.body.balance, res)
-});
+  app.get('/shop', (req,res) => {
+    dbF.Avatar.find({}, (err,data) => {
+      err ? console.log(err) : res.send(data)
+    });
+  });
+  
+  app.post('/', (req,res) => {
+    dbF.findBalance(req.body.id, res) 
+  });
+  
+  app.post('/',(req,res)=>{
+    console.log(req.body)
+  dbF.updateTokens(req.body.id, req.body.balance, res)
+  });
 
 //////////////////////Socket Io
+
 const server = http.createServer(app);
 
 const io = socketIo(server);
@@ -76,30 +92,28 @@ const io = socketIo(server);
 let interval;
 
 io.on("connection", (socket) => {
-  console.log("New client connected");
+  socket.on("id",data=>{
+    // console.log("id",data)
+    console.log("A new client is Online Id: "+data)
+    
+  })
   if (interval) {
     clearInterval(interval);
   }
-  socket.on("id",data=>{
-    console.log(data)
-  })
-  interval = setInterval(() => getApiAndEmit(socket), 200);
+  interval = setInterval(() => getApiAndEmit(socket), 1);
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
+    console.log("Client disconnected ");
     clearInterval(interval);
   });
 });
 
 const getApiAndEmit = socket => {
-
-  socket.emit("Simulationdata", "test");
+  socket.emit("Simulationdata", playerPosition);
 };
 
 server.listen(portS, () => console.log(`Listening on port ${portS}`));
 
-////////////////////////////   Game 
-
-var matrix = Array.from(Array(26), (x) => Array(29).fill(0));
+////////////////////////////   Simulation
 
 console.table(matrix)
 
@@ -108,15 +122,53 @@ var randomSpawn = function(id,res){
   var y=game.random("y")
   if(matrix[x][y]===0){
      matrix[x][y]=id
-     res.send({place:"done"})
-     console.log()
+     res.send({x:x,y:y})
+    // console.table(matrix)
   }else{
-    randomSpawn(id,res)
+    randomSpawn(id)
   }
-  
 }
 
 
+const mouve= function (PX,PY,Id,res,req){
+  var currentpositionX=(PX-130)/10
+  var currentpositionY=(PY-100)/10
+ if(matrix[currentpositionX][currentpositionY]!==undefined){
+  if(req.body.Face==="top"){
+    if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+    if(matrix[currentpositionX][currentpositionY]===0){
+      matrix[currentpositionX][currentpositionY]=Id
+      matrix[currentpositionX+1][currentpositionY]=0
+     res.send({move:true})
+    }
+ }else if(req.body.Face==="Down"){
+  if(matrix[currentpositionX][currentpositionY]!=0){res.send({move:false})}
+   if(matrix[currentpositionX][currentpositionY]===0){
+     matrix[currentpositionX][currentpositionY]=Id
+     matrix[currentpositionX-1][currentpositionY]=0
+     res.send({move:true})
+   }
+ }else if(req.body.Face==="left"){
+  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
+   if(matrix[currentpositionX][currentpositionY]===0){
+     matrix[currentpositionX][currentpositionY]=Id
+     matrix[currentpositionX][currentpositionY+1]=0 
+     res.send({move:true})
+ }
+ 
+}else if(req.body.Face==="right"){
+  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
+ if(matrix[currentpositionX][currentpositionY]===0){
+   matrix[currentpositionX][currentpositionY]=Id
+   matrix[currentpositionX][currentpositionY-1]=0
+   res.send({move:true})
+}
+}
+console.table(matrix)
+ }
+//  else{res.send("empty")}
+}
+// mouve(130,100,10,null,{body:{Face:"Down"}})
 
 
 

@@ -12,37 +12,55 @@ class App extends React.Component {
         super(props)
         this.state={
           ID:"",
+          idA : "",
           userdata:{},
           displaynavbar:false,
           displaylogin:false,
-          displaysignup:false,
+          displaysignup:true,
           displayshop:false,
           displaySimulation:false,
-          displaylogo:false,
+          displaylogo:true,
           displaySignup0:false
         }
-        this.UpdateData=this.UpdateData.bind(this)
-        this.selectCharId=this.selectCharId.bind(this)
-        this.startS=this.startS.bind(this)
+        this.UpdateData=this.UpdateData.bind(this);
+        this.selectCharId=this.selectCharId.bind(this);
+        this.startS=this.startS.bind(this);
+        this.Mlogin=this.Mlogin.bind(this);
+        this.toggleLoginSignup=this.toggleLoginSignup.bind(this);
+        this.updateUserBalance = this.updateUserBalance.bind(this);
     }
+    toggleLoginSignup(){ // Toogle between login and signup if you have Already an account or you dont
+      this.setState({displaylogin:!this.state.displaylogin,displaysignup:!this.state.displaysignup})
+    }
+
     UpdateData(data){
      this.setState({userdata:data})
     }
-    selectCharId(id){
+
+    selectCharId(id){ // Display the secound Signup component which is (signup0) To select the character that you will play with 
       this.setState({ID:id,displaySignup0:true,displaysignup  :false})
     }
+
+    updateUserBalance(id){
+      this.setState({idA : id })
+    }
+
     startS(){
       this.setState({displaySimulation:true,displaySignup0:false,displaylogo:false,displaynavbar:true,displaylogin:false})
+    }
+
+    Mlogin(){
+      this.setState({displaySignup0:false,displaylogin:true})
     }
     render() {
       return <div>
           {this.state.displaynavbar?<NavBar />:null}
           {this.state.displaylogo?<Logo/>:null}
-          {this.state.displaysignup?<Signup IdS={this.selectCharId}/>:null}
-          {!this.state.displayshop?<Shop id={this.state.ID}/>:null}
-          {this.state.displaylogin?<Login start={this.startS}/>:null}
-          {this.state.displaySimulation?<Simulation/>:null}
-          {this.state.displaySignup0?<Signup0 id={this.state.ID} start={this.startS}/>:null}
+          {this.state.displaysignup?<Signup IdS={this.selectCharId} toogle={this.toggleLoginSignup}/>:null}
+          {this.state.displayshop?<Shop idA={this.updateUserBalance}/>:null}
+          {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData}/>:null}
+          {this.state.displaySimulation?<Simulation data={this.state.userdata.data}/>:null}
+          {this.state.displaySignup0?<Signup0 id={this.state.ID} login={this.Mlogin}/>:null}
             </div>
     }
   }

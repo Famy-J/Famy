@@ -9,25 +9,25 @@ const schemaUsers = new mongoose.Schema({
     currentskin:Number,
     friends:[{name:String,Messages:Array}],
     invitation:[{name:String}],
-    AccountStatus:String,
+    AccountStatus:{Banned:Boolean,Reason:String,Periode:String},
     Balance:Number
   })
 
   const Users= mongoose.model('Users', schemaUsers);
 
-  const schemaAccountNumber=new mongoose.Schema({AccountNumber:Number});
+  const avatarSchema = mongoose.Schema({
+    name: String,
+    image: String,
+    price: Number,
+  });
+  
+  const Avatar = mongoose.model("Avatar", avatarSchema);
+
+  const schemaAccountNumber=new mongoose.Schema({AccountNumber:Number})
 
 const AccountNumberdB=mongoose.model('AccountNumber', schemaAccountNumber);
 
-const id=new AccountNumberdB({AccountNumber:0});
-
-const avatarSchema = mongoose.Schema({
-  name: String,
-  image: String,
-  price: Number,
-});
-
-const Avatar = mongoose.model("Avatar", avatarSchema);
+const id=new AccountNumberdB({AccountNumber:0})
 
 const registerUser = async function (data, res) {
   var AccountNumber;
@@ -42,14 +42,14 @@ const registerUser = async function (data, res) {
     await AccountNumberdB.updateOne({ AccountNumber: AccountNumber + 1 });
 
     return new Users({
-      email:data.email,
+        email:data.email,
       name: data.name,
       password: data.password,
       AccountNumber: AccountNumber,
       currentskin:"",
       friends:[],
       invitation:[],
-      AccountStatus:"NewAccount",
+      AccountStatus:{Banned:false,Reason:"",Periode:""},
       Balance:0
     }).save((err, doc) => {
       console.log(doc.AccountNumber)
@@ -60,13 +60,14 @@ const registerUser = async function (data, res) {
 
 const loginUser = async function (data, res) {
   await Users.findOne({ name: data.name }).then((result) => {
+    console.log(result)
     if (result === null) {
-      res.send({ Registred: false });
+      res.send({ Registred: false});
     } else {
       if (result.password === data.password) {
         res.send({
           Registred: true,
-          data: { name: result.name, Id: result.AccountNumber },
+          data: { name: result.name, Id: result.AccountNumber,skin:result.currentskin},
         });
       } else {
         res.send({ Registred: false });
@@ -75,66 +76,33 @@ const loginUser = async function (data, res) {
   });
 };
 
+const updateskin=function(id,currentskin,res){
+  Users.update({AccountNumber:id},{currentskin}).then(result=>{res.send("Selected")})
+}
+
 const findBalance = async function (id, res) {
   await Users.findOne({ AccountNumber : id })
-  .then((result) => {
-    res.send(result.balance)
+  .then((data) => {
+    console.log(data)
+    res.send("data.data.Balance")
   })
   .catch(err => {
     console.log(err);
   })
 };
 
-const updateskin=function(id,currentskin,res){
-  Users.update({AccountNumber:id},{currentskin}).then(result=>
-    {res.send("Selected")})
-}
-
 const updateTokens = function (id,Balance, res) {
   Users.update({ AccountNumber: id }, { Balance }).then(result => 
     {res.send("Balance updated")})
 }
 
-const character = [
-  {
-    avatar: "pokemon",
-    image: 'https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg',
-    price : 10
-  },
-  {
-    avatar: "heyy",
-    image: 'https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg',
-    price : 5
-  },
-  {
-    avatar: "heyy",
-    image: 'https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg',
-    price : 10
-  },
-  {
-    avatar: "heyy",
-    image: 'https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg',
-    price : 5
-  }
-];
-
-const insertSampleAvatars = function () {
-  Avatar.insertMany(character, () => {
-    console.log("Avatars Saved Successfully")
-    db.disconnect()
-  });
-};
-
-// insertSampleAvatars();
-
 module.exports = {
   registerUser,
   loginUser,
   Users,
-  Avatar,
   id,
   updateskin,
+  Avatar,
   updateTokens,
   findBalance,
 };
-
