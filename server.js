@@ -11,6 +11,7 @@ const dbF=require("./db/schema");
 const { id } = require('./db/schema');
 
 
+
 ////Map Matrix
 var matrix = Array.from(Array(27), (x) => Array(30).fill(0));
 
@@ -19,7 +20,8 @@ var playerPosition={} // i was here if i sleep
 
 app.use(express.static(__dirname + '/client/dist'));
 
-app.use(express.json())
+app.use(express.json());
+
 
 mongoose.connect("mongodb+srv://famy:2222@cluster0.ye5b9.gcp.mongodb.net/famy?retryWrites=true&w=majority", { useNewUrlParser: true, 
 useCreateIndex: true,
@@ -56,7 +58,7 @@ app.post('/selectChar',(req,res)=>{ // Update the account skin with the selected
 dbF.updateskin(req.body.id,req.body.currentskin,res)
 })
 
-app.post('/login',(req,res)=>{ //Deal with the login request to the server
+app.post('/login', (req,res)=>{ //Deal with the login request to the server
 dbF.loginUser(req.body,res)
 })
 
@@ -75,12 +77,12 @@ app.post("/register", (req, res) => {
     });
   });
   
-  app.get('/token', (req,res) => { // Fetch user's current balance from database
+  app.get('/balance', (req,res) => { // Fetch user's current balance from database
     dbF.findBalance(req.body.id, res) 
+    console.log(req.body)
   });
   
-  app.post('/token',(req,res)=>{ // Update user's balance
-    console.log(req.body)
+  app.post('/balance',(req,res)=>{ // Update user's balance
   dbF.updateBalance(req.body.id, req.body.balance, res)
   });
 

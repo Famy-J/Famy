@@ -4,7 +4,7 @@ class Signup0 extends React.Component {
     constructor(props){
         super(props)
         this.state={
-          charsSrc:["./chars/char[0]/char[0]fd/char[0]fd0.png","./chars/char[1]/char[1]fd/char[1]fd0.png","./chars/char[2]/char[2]fd/char[2]fd0.png","./chars/char[3]/char[3]fd/char[3]fd0.png","./chars/char[4]/char[4]fd/char[4]fd0.png"],
+          charsSrc:["./chars/0/FD/fd0.png","./chars/1/FD/fd0.png","./chars/2/FD/fd0.png","./chars/3/FD/fd0.png","./chars/4/FD/fd0.png"],
           i:0
         }
         this.AxiosSelect=this.AxiosSelect.bind(this)
@@ -15,10 +15,7 @@ class Signup0 extends React.Component {
       axios({
           url: '/selectChar',
           method: 'post',
-          data:{
-            id:this.props.id,
-            currentskin:this.state.i
-          }
+          data:{id:this.props.id,currentskin:this.state.i}
         }).then((data)=>{
           console.log(data)
           this.props.login()
@@ -48,4 +45,5 @@ class Signup0 extends React.Component {
     }
   }
 
+  
   export default Signup0
