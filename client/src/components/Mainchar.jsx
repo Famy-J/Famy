@@ -135,6 +135,9 @@ class Maincharacter extends React.Component {
           })
         }
       }
+     setTimeout(()=>{
+      this.props.unmount(this.state.positionX,this.state.positionY)
+     },100) 
     }
 
     render() {

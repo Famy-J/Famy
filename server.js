@@ -88,7 +88,6 @@ res.send(playerPosition)
   })
   
   app.post('/acceptinvitation',(req,res)=>{
-    console.log(req.body)
      dbF.acceptinvitation(req.body.to,req.body.id,res)
   })
 
@@ -98,8 +97,19 @@ res.send(playerPosition)
   })
 
   app.post("/fetchFriends",(req,res)=>{
-    console.log(req.body)
+    dbF.fetchfriends(req.body.id,res)
   })
+
+  app.post("/message",(req,res)=>{
+    console.log(req.body)
+    dbF.sendmsg(req.body.from,req.body.to,req.body.message,res,req.body.position)
+  })
+
+  app.post('/deleteP',(req,res)=>{
+    console.log(req.body)
+    deleteP(req.body.x,req.body.y,res)
+  })
+  
 //////////////////////Socket Io
 
 // const server = http.createServer(app);
@@ -133,6 +143,15 @@ res.send(playerPosition)
 ////////////////////////////   Simulation
 
 console.table(matrix)
+
+const deleteP=function(px,py,res){
+  var currentpositionX=(px-130)/10
+  var currentpositionY=(py-100)/10
+  matrix[currentpositionX][currentpositionY]=0
+  console.table(matrix)
+  console.log(currentpositionX,currentpositionY)
+  res.send()
+}
 
 var randomSpawn = function(id,res,req){
   var x=game.random("x")

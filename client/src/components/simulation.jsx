@@ -13,40 +13,71 @@ class Simulation extends React.Component {
     constructor(props){
         super(props)
         this.state={
+          UnmountPX:"",
+          UnmountPY:"",
+          friends:[],
           MpPosition:{},
           PsPositions:[],
           id:0,
           name:"",
           currentcharacter:"",
           displayInvitations:false,
-          displayFriends:false
+          displayFriends:false,
+          displayChat:false,
+          displayAboutUs:false,
+          selectedfriend:null,
+          s:setInterval(()=>{
+            axios({
+              url: '/fechdata',
+              method: 'post',
+            }).then(result=>{
+              this.setState({PsPositions:result.data})
+            })
+           },150),
+           d:setInterval(()=>{
+            axios({
+           url: '/fetchFriends',
+           method: 'post',
+           data:{id:this.state.id}
+        }).then(result=>{
+          this.setState({friends:result.data})
+        })},2000)
         }
         this.tooglechatinvitations=this.tooglechatinvitations.bind(this)
         this.tooglefriends=this.tooglefriends.bind(this)
-        this.fetchFriends=this.fetchFriends.bind(this)
+        this.showchat=this.showchat.bind(this)
+        this.hideInv=this.hideInv.bind(this)
+        this.UnmountP=this.UnmountP.bind(this)
+        this.deleteposition=this.deleteposition.bind(this)
     }
 
-    fetchFriends(){
-  axios({
-     url: '/fetchFriends',
-     method: 'post',
-     data:{id:this.state.id}
-  })
+   deleteposition(){
+    axios({
+      url: '/deleteP',
+      method: 'post',
+      data:{x:this.state.UnmountPX,y:this.state.UnmountPY}
+    })
+   }
+
+  UnmountP(x,y){
+    this.setState({UnmountPX:x,UnmountPY:y})
+  }
+
+  hideInv(){
+      this.setState({displayInvitations:false})
     }
-///////////////////
+    //////////////////
+  showchat(selected){
+    this.setState({displayChat:true,displayFriends:false,selectedfriend:(selected.target.id*1)})
+  }
+/////////////////////
     tooglechatinvitations(){
-      this.setState({displayFriends:false,displayInvitations:!this.state.displayInvitations})
+      this.setState({displayFriends:false,displayInvitations:!this.state.displayInvitations,displayChat:false})
     }
 ///////////////////
     tooglefriends(){
-      this.setState({displayFriends:!this.state.displayFriends,displayInvitations:false})
-      axios({
-        url: '/fetchFriends',
-        method: 'post',
-        data:{id:this.state.id}
-     }).then(result=>{
-       console.log(result)
-     })
+      this.setState({displayFriends:!this.state.displayFriends,displayInvitations:false,displayChat:false})
+      
     }
 //////////////////
     static getDerivedStateFromProps(nextprops){
@@ -54,25 +85,38 @@ class Simulation extends React.Component {
     id:nextprops.data.Id,
     name:nextprops.data.name
       }
-
     }
     componentDidMount(){
-      axios({
-        url: '/Rposition',
-        method: 'post',
-        data:{id:this.props.data.Id,Face:`./chars/${this.props.data.skin}/FD/fd0.png`,skin:this.props.data.skin}
-      }).then(data=>{
-        this.setState({MpPosition:data.data})
-      })
-     setInterval(()=>{
-      axios({
-        url: '/fechdata',
-        method: 'post',
-      }).then(result=>{
-        this.setState({PsPositions:result.data})
-      })
-     },150)
+        axios({
+          url: '/Rposition',
+          method: 'post',
+          data:{id:this.props.data.Id,Face:`./chars/${this.props.data.skin}/FD/fd0.png`,skin:this.props.data.skin}
+        }).then(data=>{
+          this.setState({MpPosition:data.data})
+        })
+  //    var FD=setInterval(()=>{
+  //     axios({
+  //       url: '/fechdata',
+  //       method: 'post',
+  //     }).then(result=>{
+  //       this.setState({PsPositions:result.data})
+  //     })
+  //    },150)
+     
+  //   var FF= setInterval(()=>{
+  //     axios({
+  //    url: '/fetchFriends',
+  //    method: 'post',
+  //    data:{id:this.state.id}
+  // }).then(result=>{
+  //   this.setState({friends:result.data})
+  // })},2000)
+    }
 
+    componentWillUnmount(){
+      this.deleteposition()
+      clearInterval(this.state.s)
+      clearInterval(this.state.d)
     }
     render() {
      var state=this.state
@@ -83,12 +127,13 @@ class Simulation extends React.Component {
        
 })
       return <div id="map"> 
-             <Maincharacter MainP={this.state.MpPosition} id={this.state.id} skin={this.props.data.skin}/>
+             <Maincharacter MainP={this.state.MpPosition} id={this.state.id} skin={this.props.data.skin} unmount={this.UnmountP}/>
         {Players}
-        {this.state.displayInvitations?<Invitations id={this.props.data.Id}/>:null}
-        {this.state.displayFriends?<Friends/>:null}
+        {this.state.displayInvitations?<Invitations id={this.props.data.Id} hide={this.hideInv}/>:null}
+        {this.state.displayFriends?<Friends friends={this.state.friends} chat={this.showchat}/>:null}
+        {this.state.displayChat?<Chat messages={this.state.friends[this.state.selectedfriend]} from={this.state.name} position={this.state.selectedfriend}/>:null}
         <img src="Friends.png" id="FriendsLogo" onClick={this.tooglefriends}/>
-        <img src="invitations.png" id="invitations" onClick={this.tooglechatinvitations}/>
+        <img src="invitations.png" id="invitations" onClick={this.tooglechatinvitations} />
       </div>
     }
   }

@@ -97,7 +97,6 @@ Users.findOne({AccountNumber:id}).then(data=>{
 }
 
 const acceptinvitation=async function(userId,invId,res){
-  console.log(userId)
   var inv=undefined
   var invP=undefined
   var finalR=[]
@@ -108,6 +107,7 @@ await Users.findOne({AccountNumber:userId}).then(result=>{
   for(var i=0;i<r.length;i++){
     if(r[i].id==invId){
       inv=r[i].from
+      console.log(inv,"from",userId,"To")
     }
     if(r[i].id!=invId){
       finalR.push(r[i])
@@ -115,16 +115,11 @@ await Users.findOne({AccountNumber:userId}).then(result=>{
   }
 })
 await Users.update({AccountNumber:userId},{invitation:finalR})
-await Users.update({id:userId},{$push:{friends:{name:inv,Messages:[]}}})
-await Users.update({name:inv},{$push:{friends:{name:username,Messages:[]}}})
+await Users.update({AccountNumber:userId},{$push:{friends:{name:inv,Messages:[]}}}).catch(err=>{console.log(err)})
+await Users.update({name:inv},{$push:{friends:{name:username,Messages:[]}}}).catch(err=>{console.log(err)})
 res.send()
 }
 
-const fetchfriends=async function(id,res){
-await Users.findOne({AccountNumber:id}).then(result=>{
-  console.log(result)
-})
-}
 const rejectinvitation=async function(userId,invId,res){
   var inv=undefined
   var invP=undefined
@@ -146,6 +141,39 @@ const rejectinvitation=async function(userId,invId,res){
 res.send()
 }
 
+const fetchfriends=async function(id,res){
+  await Users.findOne({AccountNumber:id}).then(result=>{
+    res.send(result.friends)
+  })
+  }
+
+  const sendmsg=async function(from,to,msg,res,position){
+    var newMessages0=undefined
+    var newfriends0=undefined
+await Users.findOne({name:from}).then(result=>{
+  newfriends0=result.friends
+  newMessages0=result.friends[position].Messages
+  newMessages0.push({from:from,to:to,message:msg})
+  newfriends0.Messages=newMessages0
+})
+await Users.update({name:from},{friends:newfriends0}).then(result=>{
+  console.log(result)
+})
+//secound user
+var newfriends=undefined
+var newMessages=undefined
+await Users.findOne({name:to}).then(result=>{
+  newfriends=result.friends
+  newMessages=result.friends[position].Messages
+  newMessages.push({from:from,to:to,message:msg})
+  newfriends.Messages=newMessages
+  console.log(newfriends.Messages)
+})
+await Users.update({name:to},{friends:newfriends}).then(result=>{
+  console.log(result)
+})
+res.send()
+  }
 
 module.exports = {
   registerUser,
@@ -157,6 +185,8 @@ module.exports = {
   invitation,
   fetchinvitations,
   acceptinvitation,
-  rejectinvitation
+  rejectinvitation,
+  fetchfriends,
+  sendmsg
 };
 

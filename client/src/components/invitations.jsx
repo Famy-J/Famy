@@ -11,7 +11,7 @@ class Invitations extends React.Component {
         this.acceptinvitation=this.acceptinvitation.bind(this)
     }
 rejectinvitation(e){
-console.log(e.target.id)
+this.props.hide()
 axios({
   url: '/rejectinvitation',
   method: 'post',
@@ -19,6 +19,7 @@ axios({
 })
 }
 acceptinvitation(e){
+  this.props.hide()
 console.log(e.target)
 axios({
   url: '/acceptinvitation',

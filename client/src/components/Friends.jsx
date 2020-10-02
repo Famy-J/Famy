@@ -7,11 +7,14 @@ constructor(props){
 }
     render() {
       return <div id="friendContainer">
-     <div className="profilfriend">
-       <div>jammy</div>
-       <img src="chat.png" className="chatl"/>
-     </div>
+     {this.props.friends.map((elem,index)=>{
+   return <div key={index} className="profilfriend">
+    <div>{elem.name}</div>
+    <img src="chat.png" className="chatl" id={index} onClick={this.props.chat}/>
+   </div>
+     })}
       </div>
     }
   }
   export default Friends
+ 
