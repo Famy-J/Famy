@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "./navbar.jsx";
 import axios from "axios";
-import { get } from "mongoose";
 import Toast from "light-toast";
 class AboutUs extends React.Component {
   constructor() {
@@ -47,14 +46,14 @@ class AboutUs extends React.Component {
         <h4>what are Mary-j Tokens ?</h4>
         <p>description here</p>
         <h2>development team:</h2>
-        <h4>
-          <a href="https://github.com/Firas-Bchir">Firas Bchir</a> <br />
-          <a href="https://github.com/alaa-lasoued">Ala lassoued</a> <br />
-          <a href="https://github.com/malek-chebil">Malek Chebil</a> <br />
-          <a href="https://github.com/Yassine-Knaizia">Yassine Knaizia</a>{" "}
+        <h4 id="devName" >
+          <a id="namedevlop" href="https://github.com/Firas-Bchir">*Firas Bchir*</a> <br />
+          <a id="namedevlop" href="https://github.com/alaa-lasoued">*Ala lassoued*</a> <br />
+          <a id="namedevlop" href="https://github.com/malek-chebil">*Malek Chebil*</a> <br />
+          <a id="namedevlop" href="https://github.com/Yassine-Knaizia">*Yassine Knaizia*</a>{" "}
           <br />
         </h4>
-        <h3>Contact Us</h3>
+        <h3 id="contact" >Contact Us</h3>
         <input
           type="text"
           placeholder="send us a feedback or find support"

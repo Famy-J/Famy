@@ -64,7 +64,6 @@ app.post("/feedbacks", async (res, req) => {
     .catch((e) => {
       console.log(error);
     });
-  res.end();
 });
 
 app.get("/ban", async (req, res) => {
