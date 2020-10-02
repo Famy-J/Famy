@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./navbar.jsx";
+import Token from "./token.jsx";
 
 class Avatar extends React.Component {
   constructor(props) {
@@ -59,18 +60,21 @@ class Shop extends React.Component {
   render() {
     return (
       <div>
-        <Navbar/>
-         <div className="shopBody">
-        <div className="Row">
-          {character.map((element, key) => {
-            return (
-              <Avatar key={key} avatar={element.avatar} image={element.image} />
-            );
-          })}
+        <Token />
+        <div className="shopBody">
+          <div className="Row">
+            {character.map((element, key) => {
+              return (
+                <Avatar
+                  key={key}
+                  avatar={element.avatar}
+                  image={element.image}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
-     
     );
   }
 }
