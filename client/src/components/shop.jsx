@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import Token from "./Token.jsx"
+import Token from "./token.jsx"
 
 class Avatar extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Avatar extends React.Component {
 
           <img className="avatar_image" src={this.props.image}></img>
           <h1 className="avatar_name" id='avName'> {this.props.avatar} </h1>
-          <h2 className="avatar_price" id='avPrice'>{this.props.price} M-J</h2>
+          <h2 className="avatar_price" id='avPrice'>{this.props.price} MJ</h2>
           <button className="btn" id='btnchop' onClick={this.props.handleClick}>purchase</button>
         </div>
     )

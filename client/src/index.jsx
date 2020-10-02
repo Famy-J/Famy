@@ -23,7 +23,7 @@ class App extends React.Component {
       displaySimulation: false,
       displaylogo: false,
       displaySignup0: false,
-      displayToken: true,
+      displayToken: false,
       displayAboutUs: false,
       displayAdmin: false,
     };

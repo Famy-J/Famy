@@ -30,7 +30,7 @@ body {
   margin: 0;
   list-style-type: none;
   position: relative;
-  top: 25px;
+  top: -2px;
 }
 ul li {
   cursor: pointer;
@@ -115,6 +115,8 @@ input {
   padding: 12px 15px;
   margin: 8px 0;
   width: 80%;
+  position: relative;
+    top: -28px;
 }
 .body {
   position: relative;
@@ -138,6 +140,7 @@ input {
 .LoginS {
   position: relative;
   top: -50px;
+  color: black;
 }
 #loginB {
   position: relative;
@@ -216,7 +219,7 @@ input {
 }
 .shopBody {
   position: relative;
-  top: 44px;
+  top: -3px;
     left: 266px;
   background: #f6f5f7;
   
@@ -230,6 +233,7 @@ input {
   /* border-radius: 10%; */
   margin-top: 25px;
   border-style: solid;
+  border-radius: 10px;
   background: lightblue;
   height: 515px;
  width: 786px;
@@ -250,22 +254,35 @@ input {
 
 .aboutus {
   position: relative;
-  top: 20px;
+  top: 6px;
   left: 250px;
-  background: #f6f5f7;
+  background: lightblue;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
   /* height: 65vh; */
-  width: 800px;
+  width: 790px;
   border: #ff2626;
   border-radius: 5%;
   border-style: solid;
+  height: 544px;
+}
+#contact{
+  position: relative;
+  position: relative;
+  top: -30px;
+  left: 3px;
+  list-style-type: circle;
+    
 }
 #feedback {
+  
   background-color: #ff2626;
+  position: relative;
+  top: -29px;
+  left: -7px;
 }
 #ban {
   color: white;
@@ -285,7 +302,7 @@ input {
   height: 500px;
 }
 h1 {
-  color: white;
+  color: black;
 }
 #userBann {
   position: relative;
@@ -310,6 +327,11 @@ h1 {
   left: 376px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+#namedevlop{
+  position: relative;
+    top: -32px;
+    left: 9px;
 }
 #repN {
   position: relative;
