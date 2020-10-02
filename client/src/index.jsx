@@ -17,7 +17,7 @@ class App extends React.Component {
       ID: "",
       userdata: {},
       displaynavbar: true,
-      displaylogin: true,
+      displaylogin: false,
       displaysignup: false,
       displayshop: false,
       displaySimulation: false,
@@ -25,7 +25,7 @@ class App extends React.Component {
       displaySignup0: false,
       displayToken: false,
       displayAboutUs: false,
-      displayAdmin: false,
+      displayAdmin: true,
     };
     this.UpdateData = this.UpdateData.bind(this);
     this.selectCharId = this.selectCharId.bind(this);
