@@ -156,5 +156,5 @@ module.exports = {
   findBalance,
   Iid,
   invitation,
-  fetchinvitations
+  fetchinvitations,
 };

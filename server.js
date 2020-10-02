@@ -1,91 +1,118 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require("express");
+const app = express();
+const port = 3000;
 const portS = process.env.PORT || 4001;
 const http = require("http");
-const mongoose=require("mongoose")
+const mongoose = require("mongoose");
 const socketIo = require("socket.io");
-const { random } = require('./Game/game');
-const game=require("./Game/game")
-const dbF=require("./db/schema");
-const { id } = require('./db/schema');
+const { random } = require("./Game/game");
+const game = require("./Game/game");
+const dbF = require("./db/schema");
+const { id, Users } = require("./db/schema");
 
-
-
-////Map Matrix
-var matrix = Array.from(Array(27), (x) => Array(30).fill(0));
-
-var playerPosition={} // i was here if i sleep  
-//////////////
-
-app.use(express.static(__dirname + '/client/dist'));
+app.use(express.static(__dirname + "/client/dist"));
 
 app.use(express.json());
 
-
-mongoose.connect("mongodb+srv://famy:2222@cluster0.ye5b9.gcp.mongodb.net/famy?retryWrites=true&w=majority", { useNewUrlParser: true, 
-useCreateIndex: true,
-useUnifiedTopology: true 
-});
-
+mongoose.connect(
+  "mongodb+srv://famy:2222@cluster0.ye5b9.gcp.mongodb.net/famy?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
+);
 
 var db = mongoose.connection;
 
-db.on('error', function() {
-  console.log('mongoose connection error');
+db.on("error", function () {
+  console.log("mongoose connection error");
 });
 
-db.once('open', function() {
-  console.log('mongoose connected successfully');
+db.once("open", function () {
+  console.log("mongoose connected successfully");
 });
-
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+  console.log(`Example app listening at http://localhost:${port}`);
+});
 
-app.post("/position",(req,res)=>{
-  console.log(req.body)
-  playerPosition[req.body.id]=req.body.positionX+"-"+req.body.positionY+"="+req.body.Face+"?"+req.body.skin
+app.post("/position", (req, res) => {
+  console.log(req.body);
+  res.send();
+});
 
-  mouve(req.body.positionX,req.body.positionY,req.body.id,res,req)
-  console.log(playerPosition)
-  res.send()
-})
+app.post("/selectChar", (req, res) => {
+  // Will Update the account skin with the selected skin from the signup0
+  console.log(req.body);
+  dbF.updateskin(req.body.id, req.body.currentskin, res);
+});
 
-app.post('/selectChar',(req,res)=>{ // Update the account skin with the selected skin from the signup0
-  console.log(req.body)
-dbF.updateskin(req.body.id,req.body.currentskin,res)
-})
+app.post("/login", (req, res) => {
+  //Deal with the login request to the server
+  dbF.loginUser(req.body, res);
+});
 
-app.post('/login', (req,res)=>{ //Deal with the login request to the server
-dbF.loginUser(req.body,res)
-})
-
-app.post("/register", (req, res) => { 
-  dbF.registerUser(req.body,res)
-  })
-
-  app.post("/Rposition",(req,res)=>{ // Randomly Choose an empty place for the newuser in the Matrix
-    randomSpawn(req.body.id,res)
-    console.table(matrix)
+app.post("/register", (req, res) => {
+  dbF.registerUser(req.body, res);
+});
+app.post("/feedbacks", async (res, req) => {
+  const feedback = new dbF.Feedbacks({
+    feedbacks: res.body.feedback,
   });
-
-  app.get('/shop', (req,res) => { // Fetch avatar data from database
-    dbF.Avatar.find({}, (err,data) => {
-      err ? console.log(err) : res.send(data)
+  await feedback
+    .save()
+    .then((res) => {
+      console.log("feedback saved");
+    })
+    .catch((e) => {
+      console.log(error);
     });
-  });
-  
-  app.get('/balance', (req,res) => { // Fetch user's current balance from database
-    dbF.findBalance(req.body.id, res) 
-    console.log(req.body)
-  });
-  
-  app.post('/balance',(req,res)=>{ // Update user's balance
-  dbF.updateBalance(req.body.id, req.body.balance, res)
-  });
+  res.end();
+});
 
+app.get("/ban", async (req, res) => {
+  await dbF.Feedbacks.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+app.post("/tokens/users", async (req, res) => {
+  const update = { Balance: req.body.token };
+  const filter = { AccountNumber: 25 };
+  await dbF.Users.findOneAndUpdate(filter, update)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+});
+
+app.get("/shop", (req, res) => {
+  dbF.Avatar.find({}, (err, data) => {
+    err ? console.log(err) : res.send(data);
+  });
+});
+
+app.get("/balance", async (req, res) => {
+    await dbF.Users.findOne({ AccountNumber: 25 })
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  })
+  .post("/balance");
+
+app.post("/purchase", async (req, res) => {
+  const update = { Balance: req.body.Balance };
+  const filter = { AccountNumber: 25 };
+   await dbF.Users.findOneAndUpdate(filter, update).then((result) => {
+     res.send(result);
+    // Users.save(result)
+  });
+});
 //////////////////////Socket Io
 
 const server = http.createServer(app);
@@ -95,85 +122,86 @@ const io = socketIo(server);
 let interval;
 
 io.on("connection", (socket) => {
-  socket.on("id",data=>{
-    // console.log("id",data)
-    console.log("A new client is Online Id: "+data)
-    
-  })
+  socket.on("id", (data) => {
+    console.log("id", data);
+    console.log("A new client is Online Id: " + data);
+    randomSpawn(data);
+    console.log(matrix);
+  });
+
   if (interval) {
     clearInterval(interval);
   }
-  interval = setInterval(() => getApiAndEmit(socket), 1);
+  interval = setInterval(() => getApiAndEmit(socket), 200);
   socket.on("disconnect", () => {
     console.log("Client disconnected ");
     clearInterval(interval);
   });
 });
 
-const getApiAndEmit = socket => {
-  socket.emit("Simulationdata", playerPosition);
+const getApiAndEmit = (socket) => {
+  socket.emit("Simulationdata", "test");
 };
 
 server.listen(portS, () => console.log(`Listening on port ${portS}`));
 
-////////////////////////////   Simulation
+////////////////////////////   Game
 
-console.table(matrix)
+var matrix = Array.from(Array(26), (x) => Array(29).fill(0));
 
-var randomSpawn = function(id,res){
-  var x=game.random("x")
-  var y=game.random("y")
-  if(matrix[x][y]===0){
-     matrix[x][y]=id
-     res.send({x:x,y:y})
-    // console.table(matrix)
-  }else{
-    randomSpawn(id)
+console.table(matrix);
+
+var randomSpawn = function (id, res) {
+  var x = game.random("x");
+  var y = game.random("y");
+  if (matrix[x][y] === 0) {
+    matrix[x][y] = id;
+    res.send({ x: x, y: y });
+  } else {
+    randomSpawn(id);
   }
-}
-
-
-const mouve= function (PX,PY,Id,res,req){
-  var currentpositionX=(PX-130)/10
-  var currentpositionY=(PY-100)/10
- if(matrix[currentpositionX][currentpositionY]!==undefined){
-  if(req.body.Face==="top"){
-    if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
-    if(matrix[currentpositionX][currentpositionY]===0){
-      matrix[currentpositionX][currentpositionY]=Id
-      matrix[currentpositionX+1][currentpositionY]=0
-     res.send({move:true})
+};
+//currentpositionX
+//currentpositionY
+const mouve = function (PX, PY, Id, res, req) {
+  var currentpositionX = (PX - 130) / 10;
+  var currentpositionY = (PY - 100) / 10;
+  if (matrix[currentpositionY][currentpositionX] !== undefined) {
+    if (req.body.Face === "top") {
+      // if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+      if (matrix[currentpositionY][currentpositionX] === 0) {
+        matrix[currentpositionY][currentpositionX] = Id;
+        matrix[currentpositionY + 1][currentpositionX] = 0;
+        //  res.send({move:true})
+      }
+    } else if (req.body.Face === "Down") {
+      // if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+      if (matrix[currentpositionY][currentpositionX] === 0) {
+        matrix[currentpositionY][currentpositionX] = Id;
+        matrix[currentpositionY - 1][currentpositionX] = 0;
+        //  res.send({move:true})
+      }
+    } else if (req.body.Face === "left") {
+      // if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+      if (matrix[currentpositionY][currentpositionX] === 0) {
+        matrix[currentpositionY][currentpositionX] = Id;
+        matrix[currentpositionY][currentpositionX + 1] = 0;
+        //  res.send({move:true})
+      }
+    } else if (req.body.Face === "right") {
+      // if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+      if (matrix[currentpositionY][currentpositionX] === 0) {
+        matrix[currentpositionY][currentpositionX] = Id;
+        matrix[currentpositionY][currentpositionX - 1] = 0;
+        //  res.send({move:true})
+      }
     }
- }else if(req.body.Face==="Down"){
-  if(matrix[currentpositionX][currentpositionY]!=0){res.send({move:false})}
-   if(matrix[currentpositionX][currentpositionY]===0){
-     matrix[currentpositionX][currentpositionY]=Id
-     matrix[currentpositionX-1][currentpositionY]=0
-     res.send({move:true})
-   }
- }else if(req.body.Face==="left"){
-  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
-   if(matrix[currentpositionX][currentpositionY]===0){
-     matrix[currentpositionX][currentpositionY]=Id
-     matrix[currentpositionX][currentpositionY+1]=0 
-     res.send({move:true})
- }
- 
-}else if(req.body.Face==="right"){
-  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
- if(matrix[currentpositionX][currentpositionY]===0){
-   matrix[currentpositionX][currentpositionY]=Id
-   matrix[currentpositionX][currentpositionY-1]=0
-   res.send({move:true})
-}
-}
-console.table(matrix)
- }
-//  else{res.send("empty")}
-}
-// mouve(130,100,10,null,{body:{Face:"Down"}})
-
-
+    console.table(matrixs);
+  } else {
+    res.send("empty");
+  }
+};
+//mouve()
 
 // dbF.id.save((result,err)=>{ // if you want to set the accounts id to 0 uncomment this
 //   console.log(result,err)
