@@ -9,15 +9,15 @@ class Avatar extends React.Component {
   render() {
     return (
 
-      <div>
-        <Token />
+      
+        
         <div className="card" id='items'>
 
           <img className="avatar_image" src={this.props.image}></img>
           <h1 className="avatar_name" id='avName'> {this.props.avatar} </h1>
           <h2 className="avatar_price" id='avPrice'>{this.props.price} M-J</h2>
           <button className="btn" id='btnchop' onClick={this.props.handleClick}>purchase</button>
-        </div></div>
+        </div>
     )
   };
 };
@@ -86,6 +86,8 @@ class Shop extends React.Component {
 
   render() {
     return (
+      <div>
+        <Token />
       <div className="shopBody">
         <div className="Row">
           {this.state.avatars.map((element, key) => {
@@ -95,6 +97,9 @@ class Shop extends React.Component {
           })};
     </div>
       </div>
+        
+      </div>
+
     )
   };
 };
