@@ -8,7 +8,7 @@ const schemaUsers = new mongoose.Schema({
     tokens:Number,
     currentskin:Number,
     friends:[{name:String,Messages:Array}],
-    invitation:[{name:String}],
+    invitation:[{from:String,To:String,id:Number}],
     AccountStatus:{Banned:Boolean,Reason:String,Periode:String},
     Balance:Number
   })
@@ -71,11 +71,40 @@ const loginUser = async function (data, res) {
 const updateskin=function(id,currentskin,res){
   Users.update({AccountNumber:id},{currentskin}).then(result=>{res.send("Selected")})
 }
+
+const schemainvitationid=new mongoose.Schema({Iid:Number})// InvitationsId
+
+const invitationid=mongoose.model('invitationid', schemainvitationid);
+
+const Iid=new invitationid({Iid:0})
+
+const invitation=async function(from,to,res){
+  console.log(to)
+  var fromN=''
+  var Nid=null
+  await Users.findOne({ AccountNumber: from }).then((result) => {fromN=result.name})
+  await invitationid.findOne().then(data=>{
+    Nid=data.Iid
+  })
+  await invitationid.update({},{Iid:Nid+1})
+  await Users.update({AccountNumber:from},{$push:{invitation:{from:fromN,To:to,id:Nid}}}).
+then(res.send())
+}
+
+const fetchinvitations=function(id,res){
+Users.findOne({AccountNumber:id}).then(data=>{
+  res.send(data.invitation)
+})
+}
+
 module.exports = {
   registerUser,
   loginUser,
   Users,
   id,
-  updateskin
+  updateskin,
+  Iid,
+  invitation,
+  fetchinvitations
 };
 

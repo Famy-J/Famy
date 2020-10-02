@@ -69,10 +69,13 @@ body{
     background-image: url(./map/map.png);
     width: 680px;
     height:500px;
+    margin: 0%;
+    padding: 0%;
   }
-  #main{
-    position: relative;
-    
+  .main{
+    position: absolute;
+    margin: 0%;
+    padding: 0%;
   }
 
 
@@ -171,4 +174,49 @@ body{
  #Sign{
    position: relative;
    top:50px;
+ }
+ #FriendsLogo{
+   margin: 0%;
+   padding: 0%;
+   width: 50px;
+   position: absolute;
+   top: 450px;
+   left: 625px;
+ }
+
+ #invitations{
+  position: absolute;
+  width: 30px;
+  top: 448px;
+  left: 575px;
+  height: 50px;
+}
+ #invcontainer{
+  position: relative;
+  border: solid black 2px;
+  background: black;
+  opacity: 0.7;
+  height: 208px;
+  width: 169px;
+  top: 233px;
+  left: 505px;
+  border-radius: 5px;
+ }
+ .invitations{
+   color: white;
+   font-size: 18px;
+   background: gray;
+   border-radius:5px;
+ }
+ .tick{
+   position: relative;
+   top: -15px;
+   height:20px;
+   width:20px;
+ }
+ .X{
+   position: relative;
+   top:-5px;
+   height:40px;
+   width:40px;
  }

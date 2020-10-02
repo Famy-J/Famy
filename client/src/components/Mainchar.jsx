@@ -26,29 +26,33 @@ class Maincharacter extends React.Component {
  
     }
     mouveView (e){
-      console.log("work")
       var charN=this.state.character
       var x=e.keyCode
       var PX=e.target
+      var face=""
       if(x===87){//top
-        if(this.state.positionX<=390&&this.state.positionX>130){
         
-
+        if(this.state.positionX<=390&&this.state.positionX>130){
+          this.setState({FU:this.state.FU+1})
+          if(this.state.FU%3===0){
+            face=this.state.face[0]["u2"]
+            this.setState({currentP:this.state.face[0]["u2"]})
+          }else if(this.state.FU%2===0){
+            face=this.state.face[0]["u1"]
+            this.setState({currentP:this.state.face[0]["u1"]})
+          }else{
+            face=this.state.face[0]["u0"]
+            this.setState({currentP:this.state.face[0]["u0"]})}
+            this.setState({positionX:this.state.positionX-10})
           axios({
             method: 'post',
             url: '/position',
             data: {
-            positionX:this.state.positionX-10,positionY:this.state.positionY,name:this.state.name,id:this.state.Id,Face:'top',skin:this.props.skin
+            positionX:this.state.positionX-10,positionY:this.state.positionY,name:this.state.name,id:this.state.Id,Face:'top',skin:this.props.skin,face:face
             }
           }).then(data=>{
             if(data.data.move){
-              this.setState({FU:this.state.FU+1})
-              if(this.state.FU%3===0){
-                this.setState({currentP:this.state.face[0]["u2"]})
-              }else if(this.state.FU%2===0){
-                this.setState({currentP:this.state.face[0]["u1"]})
-              }else{this.setState({currentP:this.state.face[0]["u0"]})}
-                this.setState({positionX:this.state.positionX-10})
+              
             }
           })
         }
@@ -57,16 +61,19 @@ class Maincharacter extends React.Component {
         if(this.state.positionY<=390&&this.state.positionY>100){
           this.setState({FL:this.state.FL+1})
           if(this.state.FL%3===0){
+            face=this.state.face[0]["L2"]
             this.setState({currentP:this.state.face[0]["L2"]})
           }else if(this.state.FL%2===0){
+            face=this.state.face[0]["L1"]
             this.setState({currentP:this.state.face[0]["L1"]})
-          }else{this.setState({currentP:this.state.face[0]["L0"]})}
+          }else{face=this.state.face[0]["L0"]
+            this.setState({currentP:this.state.face[0]["L0"]})}
             this.setState({positionY:this.state.positionY-10})
             axios({
               method: 'post',
               url: '/position',
               data: {
-              positionX:this.state.positionX,positionY:this.state.positionY-10,name:this.state.name,id:this.state.Id,Face:'left',skin:this.props.skin
+              positionX:this.state.positionX,positionY:this.state.positionY-10,name:this.state.name,id:this.state.Id,Face:'left',skin:this.props.skin,face:face
               }
             }).then(data=>{
               if(data.data.move){
@@ -79,16 +86,19 @@ class Maincharacter extends React.Component {
         if(this.state.positionY<390&&this.state.positionY>=0){
           this.setState({FR:this.state.FR+1})
               if(this.state.FR%3===0){
+                face=this.state.face[0]["R2"]
                 this.setState({currentP:this.state.face[0]["R2"]})
               }else if(this.state.FR%2===0){
+                face=this.state.face[0]["R1"]
                 this.setState({currentP:this.state.face[0]["R1"]})
-              }else{this.setState({currentP:this.state.face[0]["R0"]})}
+              }else{face=this.state.face[0]["R0"]
+                this.setState({currentP:this.state.face[0]["R0"]})}
                 this.setState({positionY:this.state.positionY+10})
           axios({
             method: 'post',
             url: '/position',
             data: {
-            positionX:this.state.positionX,positionY:this.state.positionY+10,name:this.state.name,id:this.state.Id,Face:'right',skin:this.props.skin
+            positionX:this.state.positionX,positionY:this.state.positionY+10,name:this.state.name,id:this.state.Id,Face:'right',skin:this.props.skin,face:face
             }
           }).then(data=>{
             if(data.data.move){
@@ -97,22 +107,25 @@ class Maincharacter extends React.Component {
             }
           })
         }
-          
+        
       }if(x===83){//down
         if(this.state.positionX>=130&&this.state.positionX<390){
           this.setState({FD:this.state.FD+1})
           if(this.state.FD%3===0){
+            face=this.state.face[0]["D2"]
             this.setState({currentP:this.state.face[0]["D2"]})
           }else if(this.state.FD%2===0){
+            face=this.state.face[0]["D1"]
             this.setState({currentP:this.state.face[0]["D1"]})
-          }else{this.setState({currentP:this.state.face[0]["D0"]})}
+          }else{face=this.state.face[0]["D0"]
+            this.setState({currentP:this.state.face[0]["D0"]})}
             this.setState({positionX:this.state.positionX+10})
             
           axios({
             method: 'post',
             url: '/position',
             data: {
-            positionX:this.state.positionX+10,positionY:this.state.positionY,name:this.state.name,id:this.state.Id,Face:'Down',skin:this.props.skin
+            positionX:this.state.positionX+10,positionY:this.state.positionY,name:this.state.name,id:this.state.Id,Face:'Down',skin:this.props.skin,face:face
             }
           }).then(data=>{
             if(data.data.move){
@@ -125,9 +138,7 @@ class Maincharacter extends React.Component {
     }
 
     render() {
-      return <div>
-        <img src={this.state.currentP} onKeyDown={this.mouveView} tabIndex="0" style={{"top":this.state.positionX+"px","left":this.state.positionY+"px"}} id="main"/>
-        </div>
+      return <img src={this.state.currentP} onKeyDown={this.mouveView} tabIndex="0" style={{"top":this.state.positionX+"px","left":this.state.positionY+"px"}} className="main"/>
       
     }
   }

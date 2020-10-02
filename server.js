@@ -48,11 +48,9 @@ app.listen(port, () => {
 
 app.post("/position",(req,res)=>{
   console.log(req.body)
-  playerPosition[req.body.id]=req.body.positionX+"-"+req.body.positionY+"="+req.body.Face+"?"+req.body.skin
-
+  playerPosition[req.body.id]=req.body.positionX+"-"+req.body.positionY+"="+req.body.face+"?"+req.body.skin
   mouve(req.body.positionX,req.body.positionY,req.body.id,res,req)
   console.log(playerPosition)
-  res.send()
 })
 
 app.post('/selectChar',(req,res)=>{ // Will Update the account skin with the selected skin from the signup0
@@ -69,51 +67,67 @@ app.post("/register", (req, res) => {
   })
 
   app.post("/Rposition",(req,res)=>{ // Randomly Chose an empty place for the newuser in the Matrix
-    randomSpawn(req.body.id,res)
+    console.log(req.body)
+    randomSpawn(req.body.id,res,req)
     console.table(matrix)
+    
+  })
 
+  app.post('/fechdata',(req,res)=>{
+res.send(playerPosition)
+  })
+
+  app.post("/Sinvitation",(req,res)=>{
+    console.log(req.body)
+    dbF.invitation(req.body.from,req.body.to,res)
+  })
+  
+  app.post('/fetchIn',(req,res)=>{
+    console.log(req.body)
+    dbF.fetchinvitations(req.body.id,res)
   })
 //////////////////////Socket Io
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-const io = socketIo(server);
+// const io = socketIo(server);
 
-let interval;
+// let interval;
 
-io.on("connection", (socket) => {
-  socket.on("id",data=>{
-    // console.log("id",data)
-    console.log("A new client is Online Id: "+data)
+// io.on("connection", (socket) => {
+//   socket.on("id",data=>{
+//     // console.log("id",data)
+//     console.log("A new client is Online Id: "+data)
     
-  })
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected ");
-    clearInterval(interval);
-  });
-});
+//   })
+//   if (interval) {
+//     clearInterval(interval);
+//   }
+//   interval = setInterval(() => getApiAndEmit(socket), 2000);
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected ");
+//     clearInterval(interval);
+//   });
+// });
 
-const getApiAndEmit = socket => {
-  socket.emit("Simulationdata", playerPosition);
-};
+// const getApiAndEmit = socket => {
+//   socket.emit("Simulationdata", playerPosition);
+// };
 
-server.listen(portS, () => console.log(`Listening on port ${portS}`));
+// server.listen(portS, () => console.log(`Listening on port ${portS}`));
 
 ////////////////////////////   Simulation
 
 console.table(matrix)
 
-var randomSpawn = function(id,res){
+var randomSpawn = function(id,res,req){
   var x=game.random("x")
   var y=game.random("y")
   if(matrix[x][y]===0){
      matrix[x][y]=id
+     playerPosition[req.body.id]=(130+(x*10))+"-"+(100+(y*10))+"="+req.body.Face+"?"+req.body.skin
      res.send({x:x,y:y})
-    // console.table(matrix)
+
   }else{
     randomSpawn(id)
   }
@@ -125,7 +139,7 @@ const mouve= function (PX,PY,Id,res,req){
   var currentpositionY=(PY-100)/10
  if(matrix[currentpositionX][currentpositionY]!==undefined){
   if(req.body.Face==="top"){
-    if(matrix[currentpositionY][currentpositionX]!=0){res.send({move:false})}
+    if(matrix[currentpositionX][currentpositionY]!=0){res.send({move:false})}
     if(matrix[currentpositionX][currentpositionY]===0){
       matrix[currentpositionX][currentpositionY]=Id
       matrix[currentpositionX+1][currentpositionY]=0
@@ -139,7 +153,7 @@ const mouve= function (PX,PY,Id,res,req){
      res.send({move:true})
    }
  }else if(req.body.Face==="left"){
-  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
+  if(matrix[currentpositionX][currentpositionY]!=0){res.send({move:false})}
    if(matrix[currentpositionX][currentpositionY]===0){
      matrix[currentpositionX][currentpositionY]=Id
      matrix[currentpositionX][currentpositionY+1]=0 
@@ -147,7 +161,7 @@ const mouve= function (PX,PY,Id,res,req){
  }
  
 }else if(req.body.Face==="right"){
-  if(matrix[currentpositionX][currentpositionX]!=0){res.send({move:false})}
+  if(matrix[currentpositionX][currentpositionY]!=0){res.send({move:false})}
  if(matrix[currentpositionX][currentpositionY]===0){
    matrix[currentpositionX][currentpositionY]=Id
    matrix[currentpositionX][currentpositionY-1]=0
@@ -156,9 +170,8 @@ const mouve= function (PX,PY,Id,res,req){
 }
 console.table(matrix)
  }
-//  else{res.send("empty")}
 }
-// mouve(130,100,10,null,{body:{Face:"Down"}})
+
 
 
 

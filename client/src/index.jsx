@@ -46,6 +46,7 @@ class App extends React.Component {
     Mlogin(){
       this.setState({displaySignup0:false,displaylogin:true})
     }
+    
     render() {
       return <div>
           {this.state.displaynavbar?<NavBar />:null}
