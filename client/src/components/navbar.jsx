@@ -14,9 +14,6 @@ class Navbar extends React.Component {
       this.setState({displayshop:true});
     }
 
-    homePage(){
-      this.setState({})
-    }
     render() {
       return <div className="container">
       <ul>
