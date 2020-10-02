@@ -254,9 +254,9 @@ input {
 
 .aboutus {
   position: relative;
-  top: 6px;
+  top: 16px;
   left: 250px;
-  background: lightblue;
+  background: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -264,10 +264,15 @@ input {
   font-family: "Montserrat", sans-serif;
   /* height: 65vh; */
   width: 790px;
-  border: #ff2626;
+  border: #f6f5f7;
   border-radius: 5%;
   border-style: solid;
   height: 544px;
+}
+#namedevlop{
+  position: relative;
+    top: -32px;
+    left: 9px;
 }
 #contact{
   position: relative;
@@ -302,7 +307,19 @@ input {
   height: 500px;
 }
 h1 {
-  color: black;
+  color: white;
+}
+h4{
+  color: white;
+}
+h3 {
+  color: white
+}
+h2{
+  color: white;
+}
+p{
+  color: white;
 }
 #userBann {
   position: relative;
@@ -328,11 +345,7 @@ h1 {
   overflow-y: auto;
   overflow-x: hidden;
 }
-#namedevlop{
-  position: relative;
-    top: -32px;
-    left: 9px;
-}
+
 #repN {
   position: relative;
   left: 146px;
@@ -347,6 +360,24 @@ h1 {
   border-radius: 4px;
   background-color: #eeeeee;
 }
+#Xbutt {
+  padding: 11px;
+    color: red;
+    background-color: white;
+    position: relative;
+    left: 311px;
+    top: 2px;
+    background-color: red;
+    color: white;
+    padding: 14px 20px;
+    margin: -2px 0px;
+    border: inherit;
+    cursor: pointer;
+    width: 14%;
+    opacity: 0.9;
+    border-radius: 0px;
+}
+
 #token {
   width:65%;
   margin-left:10%;

@@ -11,6 +11,7 @@ export class Admin extends Component {
       dataF: [],
       displayBann: true,
       displayFeedback: false,
+      dataR : []
     };
     this.AxiosBann = this.AxiosBann.bind(this);
     this.handlClick = this.handlClick.bind(this);
@@ -88,9 +89,10 @@ export class Admin extends Component {
             </div>
             <div id="repo">
               <h1 id="repN">Reports</h1>
-              <div id="reposes"></div>
+              <div id="reposes" ></div>
+              
               <br></br>
-              <div id="reposes"></div>
+              <div id="reposes"> {} <button id="Xbutt">X</button>    </div>
               <br></br>
               <div id="reposes"></div>
               <br></br>
