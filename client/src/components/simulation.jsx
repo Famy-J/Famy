@@ -87,6 +87,7 @@ class Simulation extends React.Component {
       }
     }
     componentDidMount(){
+      this.props.userid(this.state.id)
         axios({
           url: '/Rposition',
           method: 'post',
@@ -94,23 +95,6 @@ class Simulation extends React.Component {
         }).then(data=>{
           this.setState({MpPosition:data.data})
         })
-  //    var FD=setInterval(()=>{
-  //     axios({
-  //       url: '/fechdata',
-  //       method: 'post',
-  //     }).then(result=>{
-  //       this.setState({PsPositions:result.data})
-  //     })
-  //    },150)
-     
-  //   var FF= setInterval(()=>{
-  //     axios({
-  //    url: '/fetchFriends',
-  //    method: 'post',
-  //    data:{id:this.state.id}
-  // }).then(result=>{
-  //   this.setState({friends:result.data})
-  // })},2000)
     }
 
     componentWillUnmount(){

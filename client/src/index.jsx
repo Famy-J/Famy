@@ -8,10 +8,12 @@ import NavBar from "./components/navbar.jsx"
 import Logo from "./components/logo.jsx"
 import Signup0 from "./components/signup0.jsx"
 import AboutUs from "./components/aboutUs.jsx"
+import Token from "./components/token.jsx"
 class App extends React.Component {
     constructor(props){
         super(props)
         this.state={
+          token:0,
           ID:"",
           userdata:{},
           displaynavbar:false,
@@ -22,7 +24,8 @@ class App extends React.Component {
           displaylogo:true,
           displaySignup0:false,
           displayAboutUs:false,
-          displayS:false
+          displayS:false,
+          displayToken:false
         }
         this.UpdateData=this.UpdateData.bind(this)
         this.selectCharId=this.selectCharId.bind(this)
@@ -33,8 +36,16 @@ class App extends React.Component {
         this.displayshop=this.displayshop.bind(this)
         this.displaysHome=this.displaysHome.bind(this)
         this.Sset=this.Sset.bind(this)
+        this.Userid=this.Userid.bind(this)
+        this.PassTokenToParent=this.PassTokenToParent.bind(this)
     }
+     PassTokenToParent(token){
+       this.setState({token:token})
+     }
 
+    Userid(id){
+   this.setState({ID:id})
+    }
     Sset(){
       this.setState({displayS:true})
     }
@@ -64,7 +75,7 @@ class App extends React.Component {
     }
 
     startS(){
-      this.setState({displaySimulation:true,displaySignup0:false,displaylogo:false,displaynavbar:true,displaylogin:false})
+      this.setState({displaySimulation:true,displaySignup0:false,displaylogo:false,displaynavbar:true,displaylogin:false,displayToken:true})
     }
 
     Mlogin(){
@@ -73,12 +84,13 @@ class App extends React.Component {
     
     render() {
       return <div>
+          {this.state.displayToken?<Token userid={this.state.ID} Pass={this.PassTokenToParent}/>:null}
           {this.state.displaynavbar?<NavBar Aboutus={this.displayAboutUs} Shop={this.displayshop} Home={this.displaysHome}/>:null}
           {this.state.displaylogo?<Logo/>:null}
           {this.state.displaysignup?<Signup IdS={this.selectCharId} toogle={this.toggleLoginSignup}/>:null}
-          {this.state.displayshop?<Shop/>:null}
+          {this.state.displayshop?<Shop token={this.state.token}/>:null}
           {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData}/>:null}
-          {this.state.displaySimulation?<Simulation data={this.state.userdata.data}/>:null}
+          {this.state.displaySimulation?<Simulation data={this.state.userdata.data} userid={this.Userid}/>:null}
           {this.state.displaySignup0?<Signup0 id={this.state.ID} login={this.Mlogin}/>:null}
           {this.state.displayAboutUs?<AboutUs/>:null}
             </div>

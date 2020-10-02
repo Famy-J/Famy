@@ -109,7 +109,15 @@ res.send(playerPosition)
     console.log(req.body)
     deleteP(req.body.x,req.body.y,res)
   })
-  
+
+  app.post("/balance",(req,res)=>{
+   dbF.UpdataBalance(req.body.id,req.body.balance,res)
+  })
+ 
+  app.post( "/balanceF",(req,res)=>{
+    console.log(req.body,"BALANCE")
+    dbF.Getbalance(req.body.id,res)
+  })
 //////////////////////Socket Io
 
 // const server = http.createServer(app);

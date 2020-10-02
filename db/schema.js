@@ -169,13 +169,23 @@ await Users.findOne({name:to}).then(result=>{
   newfriends.Messages=newMessages
   console.log(newfriends.Messages)
 })
-await Users.update({name:to},{friends:newfriends}).then(result=>{
-  console.log(result)
-})
+await Users.update({name:to},{friends:newfriends})
 res.send()
   }
 
+  const UpdataBalance=async function(id,balance,res){
+    await Users.update({AccountNumber:id},{Balance:balance}).then(result=>{
+   res.send()
+    })
+  }
+  const Getbalance=async function(id,res){
+    await Users.findOne({AccountNumber:id}).then(result=>{
+      res.send({balance:result.Balance})
+    })
+  }
+
 module.exports = {
+  
   registerUser,
   loginUser,
   Users,
@@ -187,6 +197,8 @@ module.exports = {
   acceptinvitation,
   rejectinvitation,
   fetchfriends,
-  sendmsg
+  sendmsg,
+  UpdataBalance,
+  Getbalance
 };
 
