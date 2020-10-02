@@ -7,12 +7,13 @@ import Simulation from "./components/simulation.jsx"
 import NavBar from "./components/navbar.jsx"
 import Logo from "./components/logo.jsx"
 import Signup0 from "./components/signup0.jsx"
+
 class App extends React.Component {
     constructor(props){
         super(props)
         this.state={
           ID:"",
-          idA : "",
+          idA : 10,
           userdata:{},
           displaynavbar:false,
           displaylogin:false,
@@ -27,8 +28,8 @@ class App extends React.Component {
         this.startS=this.startS.bind(this);
         this.Mlogin=this.Mlogin.bind(this);
         this.toggleLoginSignup=this.toggleLoginSignup.bind(this);
-        this.updateUserBalance = this.updateUserBalance.bind(this);
     }
+
     toggleLoginSignup(){ // Toogle between login and signup if you have Already an account or you dont
       this.setState({displaylogin:!this.state.displaylogin,displaysignup:!this.state.displaysignup})
     }
@@ -39,10 +40,6 @@ class App extends React.Component {
 
     selectCharId(id){ // Display the secound Signup component which is (signup0) To select the character that you will play with 
       this.setState({ID:id,displaySignup0:true,displaysignup  :false})
-    }
-
-    updateUserBalance(id){
-      this.setState({idA : id })
     }
 
     startS(){
@@ -57,7 +54,7 @@ class App extends React.Component {
           {this.state.displaynavbar?<NavBar />:null}
           {this.state.displaylogo?<Logo/>:null}
           {this.state.displaysignup?<Signup IdS={this.selectCharId} toogle={this.toggleLoginSignup}/>:null}
-          {this.state.displayshop?<Shop idA={this.updateUserBalance}/>:null}
+          {this.state.displayshop?<Shop />:null}
           {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData}/>:null}
           {this.state.displaySimulation?<Simulation data={this.state.userdata.data}/>:null}
           {this.state.displaySignup0?<Signup0 id={this.state.ID} login={this.Mlogin}/>:null}
