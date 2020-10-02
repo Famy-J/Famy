@@ -79,7 +79,6 @@ const invitationid=mongoose.model('invitationid', schemainvitationid);
 const Iid=new invitationid({Iid:0})
 
 const invitation=async function(from,to,res){
-  console.log(to)
   var fromN=''
   var Nid=null
   await Users.findOne({ AccountNumber: from }).then((result) => {fromN=result.name})
@@ -87,8 +86,8 @@ const invitation=async function(from,to,res){
     Nid=data.Iid
   })
   await invitationid.update({},{Iid:Nid+1})
-  await Users.update({AccountNumber:from},{$push:{invitation:{from:fromN,To:to,id:Nid}}}).
-then(res.send())
+  await Users.update({AccountNumber:to},{$push:{invitation:{from:fromN,To:to,id:Nid}}})
+res.send()
 }
 
 const fetchinvitations=function(id,res){
@@ -96,6 +95,57 @@ Users.findOne({AccountNumber:id}).then(data=>{
   res.send(data.invitation)
 })
 }
+
+const acceptinvitation=async function(userId,invId,res){
+  console.log(userId)
+  var inv=undefined
+  var invP=undefined
+  var finalR=[]
+  var username=undefined
+await Users.findOne({AccountNumber:userId}).then(result=>{
+  username=result.name
+  var r=result.invitation
+  for(var i=0;i<r.length;i++){
+    if(r[i].id==invId){
+      inv=r[i].from
+    }
+    if(r[i].id!=invId){
+      finalR.push(r[i])
+    }
+  }
+})
+await Users.update({AccountNumber:userId},{invitation:finalR})
+await Users.update({id:userId},{$push:{friends:{name:inv,Messages:[]}}})
+await Users.update({name:inv},{$push:{friends:{name:username,Messages:[]}}})
+res.send()
+}
+
+const fetchfriends=async function(id,res){
+await Users.findOne({AccountNumber:id}).then(result=>{
+  console.log(result)
+})
+}
+const rejectinvitation=async function(userId,invId,res){
+  var inv=undefined
+  var invP=undefined
+  var finalR=[]
+  var username=undefined
+  await Users.findOne({AccountNumber:userId}).then(result=>{
+    username=result.name
+    var r=result.invitation
+    for(var i=0;i<r.length;i++){
+      if(r[i].id==invId){
+        inv=r[i].from
+      }
+      if(r[i].id!=invId){
+        finalR.push(r[i])
+      }
+    }
+  })
+  await Users.update({AccountNumber:userId},{invitation:finalR})
+res.send()
+}
+
 
 module.exports = {
   registerUser,
@@ -105,6 +155,8 @@ module.exports = {
   updateskin,
   Iid,
   invitation,
-  fetchinvitations
+  fetchinvitations,
+  acceptinvitation,
+  rejectinvitation
 };
 

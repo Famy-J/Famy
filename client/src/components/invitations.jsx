@@ -12,15 +12,25 @@ class Invitations extends React.Component {
     }
 rejectinvitation(e){
 console.log(e.target.id)
+axios({
+  url: '/rejectinvitation',
+  method: 'post',
+  data:{to:this.props.id,id:e.target.id}
+})
 }
 acceptinvitation(e){
-console.log(e.target.id)
+console.log(e.target)
+axios({
+  url: '/acceptinvitation',
+  method: 'post',
+  data:{to:this.props.id,id:e.target.id}
+})
 }
     componentDidMount(){
         axios({
             url: '/fetchIn',
             method: 'post',
-            data:{id:this.props.id}
+            data:{id:this.props.id,to:this.props.id}
           }).then(data=>{
               this.setState({Invitations:data.data})
           })
@@ -31,7 +41,7 @@ console.log(e.target.id)
             return <div>
             <div className="invitations" key={index}>You have invitation from {elem.from}</div>
             <img src="tick-logo.png" alt="" className="tick" id={elem.id}  onClick={this.acceptinvitation}/>
-            <img src="X-logo.png" alt="" className="X" id={elem.id}  onClick={this.acceptinvitation}/>
+            <img src="X-logo.png" alt="" className="X" id={elem.id}  onClick={this.rejectinvitation}/>
             </div>
         })}
         </div>

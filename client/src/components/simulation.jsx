@@ -21,15 +21,34 @@ class Simulation extends React.Component {
           displayInvitations:false,
           displayFriends:false
         }
-        this.tooglechat=this.tooglechat.bind(this)
         this.tooglechatinvitations=this.tooglechatinvitations.bind(this)
+        this.tooglefriends=this.tooglefriends.bind(this)
+        this.fetchFriends=this.fetchFriends.bind(this)
     }
+
+    fetchFriends(){
+  axios({
+     url: '/fetchFriends',
+     method: 'post',
+     data:{id:this.state.id}
+  })
+    }
+///////////////////
     tooglechatinvitations(){
-      this.setState({displaychat:false,displayInvitations:!this.state.displayInvitations})
+      this.setState({displayFriends:false,displayInvitations:!this.state.displayInvitations})
     }
-    tooglechat(){
-      this.setState({displaychat:!this.state.displaychat,displayInvitations:false})
+///////////////////
+    tooglefriends(){
+      this.setState({displayFriends:!this.state.displayFriends,displayInvitations:false})
+      axios({
+        url: '/fetchFriends',
+        method: 'post',
+        data:{id:this.state.id}
+     }).then(result=>{
+       console.log(result)
+     })
     }
+//////////////////
     static getDerivedStateFromProps(nextprops){
       return {
     id:nextprops.data.Id,
@@ -38,7 +57,6 @@ class Simulation extends React.Component {
 
     }
     componentDidMount(){
-   
       axios({
         url: '/Rposition',
         method: 'post',
@@ -46,7 +64,6 @@ class Simulation extends React.Component {
       }).then(data=>{
         this.setState({MpPosition:data.data})
       })
-      '/fechdata'
      setInterval(()=>{
       axios({
         url: '/fechdata',
@@ -56,17 +73,6 @@ class Simulation extends React.Component {
       })
      },150)
 
-
-      // var idSend=true  //We change from using socke.io To normal fetching function
-      // const socket=socketIOClient(Endpoint)
-      // socket.on("Simulationdata",data=>{
-      //   console.log(data)
-      //   this.setState({PsPositions:data})
-      //   if(idSend){
-      //     socket.emit('id',this.state.id)
-      //   }
-      //   idSend=false
-      // })
     }
     render() {
      var state=this.state
@@ -81,7 +87,7 @@ class Simulation extends React.Component {
         {Players}
         {this.state.displayInvitations?<Invitations id={this.props.data.Id}/>:null}
         {this.state.displayFriends?<Friends/>:null}
-        <img src="Friends.png" id="FriendsLogo" onClick={this.tooglechat}/>
+        <img src="Friends.png" id="FriendsLogo" onClick={this.tooglefriends}/>
         <img src="invitations.png" id="invitations" onClick={this.tooglechatinvitations}/>
       </div>
     }

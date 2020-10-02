@@ -86,6 +86,20 @@ res.send(playerPosition)
     console.log(req.body)
     dbF.fetchinvitations(req.body.id,res)
   })
+  
+  app.post('/acceptinvitation',(req,res)=>{
+    console.log(req.body)
+     dbF.acceptinvitation(req.body.to,req.body.id,res)
+  })
+
+  app.post('/rejectinvitation',(req,res)=>{
+    console.log(req.body)
+  dbF.rejectinvitation(req.body.to,req.body.id,res)
+  })
+
+  app.post("/fetchFriends",(req,res)=>{
+    console.log(req.body)
+  })
 //////////////////////Socket Io
 
 // const server = http.createServer(app);
