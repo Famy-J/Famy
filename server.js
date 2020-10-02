@@ -76,16 +76,42 @@ app.get("/ban", async (req, res) => {
       res.send(err);
     });
 });
-app.post("/tokens/users", async (res, req) => {
-  // const update = { token: res.body.token };
-  // const filter = {id: res.params.id};
-  // await dbF.Users.findByIdAndUpdate(filter, update)
-  //   .then((result) => {
-  //     res.json(result);
-  //   })
-  //   .catch((e) => {
-  //    console.log(e);
-  //   });
+app.post("/tokens/users", async (req, res) => {
+  const update = { Balance: req.body.token };
+  const filter = { AccountNumber: 25 };
+  await dbF.Users.findOneAndUpdate(filter, update)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+});
+
+app.get("/shop", (req, res) => {
+  dbF.Avatar.find({}, (err, data) => {
+    err ? console.log(err) : res.send(data);
+  });
+});
+
+app.get("/balance", async (req, res) => {
+    await dbF.Users.findOne({ AccountNumber: 25 })
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  })
+  .post("/balance");
+
+app.post("/purchase", async (req, res) => {
+  console.log(req.body.Balance);
+  const update = { Balance: req.body.Balance };
+  const filter = { AccountNumber: 25 };
+   await dbF.Users.findOneAndUpdate(filter, update).then((result) => {
+    res.send(result);
+  });
 });
 //////////////////////Socket Io
 

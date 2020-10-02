@@ -5,27 +5,50 @@ class Token extends React.Component {
   constructor() {
     super();
     this.state = {
-      userId: 0,
-      token: 0 + "_MJ",
+      userId: "ab",
+      balance: 0,
     };
     // this.useEffect = this.useEffect.bind(this);
   }
   componentDidMount() {
-    const id = this.state.userId;
+    axios({
+      method: "GET",
+      url: "/balance",
+    }).then((res) => {
+      console.log(this.state.balance);
+      this.setState({ balance: res.data.Balance });
+    }).catch((e) => {
+      res.status(404);
+    });
+
+    axios({
+      method: "post",
+      url: "/balance",
+      data: {
+        name: this.state.userId,
+      },
+    });
+
     setInterval(() => {
       axios({
         method: "POST",
         url: "/tokens/users",
         data: {
-          token: id,
+          token: this.state.balance + 1,
         },
-      })
-        .then((result) => {
-          this.setState({ token: result });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      }).catch((e) => {
+        res.status(404);
+      });
+
+      axios({
+        method: "GET",
+        url: "/balance",
+      }).then((res) => {
+        console.log(this.state.balance);
+        this.setState({ balance: res.data.Balance });
+      }).catch((e) => {
+        res.status(404);
+      });
     }, 100000);
   }
 
@@ -34,7 +57,7 @@ class Token extends React.Component {
       <div className="tokens">
         <img src="token.png" alt="" id="tokenImage" />
 
-        <h3 id="token">{this.state.token}</h3>
+        <h3 id="token">{this.state.balance}_MJ</h3>
       </div>
     );
   }
