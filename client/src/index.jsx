@@ -16,14 +16,14 @@ class App extends React.Component {
     this.state = {
       ID: "",
       userdata: {},
-      displaynavbar: false,
+      displaynavbar: true,
       displaylogin: false,
       displaysignup: false,
       displayshop: true,
       displaySimulation: false,
       displaylogo: false,
       displaySignup0: false,
-      displayToken: false,
+      displayToken: true,
       displayAboutUs: false,
       displayAdmin: false,
     };

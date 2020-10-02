@@ -29,6 +29,8 @@ body {
   padding: 0;
   margin: 0;
   list-style-type: none;
+  position: relative;
+  top: 25px;
 }
 ul li {
   cursor: pointer;
@@ -55,6 +57,7 @@ ul li:hover::before {
   bottom: 56px;
   left: 0;
   background-color: rgb(255, 63, 63);
+
 }
 
 .container {
@@ -117,18 +120,19 @@ input {
   position: relative;
   top: 50px;
   left: 450px;
-  background: #f6f5f7;
-  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+ display: flex;
   font-family: "Montserrat", sans-serif;
   height: 65vh;
   width: 400px;
   border: #ffea2b;
   border-radius: 10%;
   border-style: solid;
+  background: lightblue;
+   
 }
+
 
 .LoginS {
   position: relative;
@@ -173,23 +177,36 @@ input {
 }
 .avatar_image {
   /* text-align: center; */
-  margin-left: 70px;
-  width: 40%;
+  
+  position: relative;
+  left: 37px;
+  height: 77px;
+  top: 7px;
 }
 .avatar_name {
   width: auto;
-  text-align: center;
+    text-align: center;
+    color: darkblue;
+    height: 24px;
+    position: relative;
+    left: -2px;
+    font-size: 21px;
+}
+.avatar_price {
+  position: relative;
+    left: 66px;
+    font-size: 21px;
 }
 #token {
-  width: 5%;
+  width: 20%;
   margin: 10px 12px;
 }
 .Row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  overflow-y: scroll;
-  overflow-x: visible;
+  margin-left: 48px;
+ 
 }
 .Column {
   flex: 1 1 0px;
@@ -198,10 +215,10 @@ input {
 }
 .shopBody {
   position: relative;
-  top: 100px;
-  left: 310px;
+  top: 44px;
+    left: 266px;
   background: #f6f5f7;
-  display: flex;
+  
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -210,11 +227,26 @@ input {
   width: 700px;
   border: #ffea2b;
   /* border-radius: 10%; */
+  margin-top: 25px;
   border-style: solid;
+  background: lightblue;
+  height: 515px;
+ width: 786px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+#btnchop{
+  margin-left: 33px;
+    position: relative;
+    left: -11px;
+    font-size: 9px;
 }
 .btn {
   margin-left: 30px;
+  position: relative;
+  left: -20px;
 }
+
 .aboutus {
   position: relative;
   top: 20px;
@@ -261,6 +293,13 @@ h1 {
   margin-top: 33px;
   top: 68px;
 }
+#items{
+  width: 193px;
+    height: 238px;
+    margin-top: 9px;
+    border: 1px solid black;
+
+}
 #repo {
   border: 1px solid black;
   width: 416px;
@@ -283,6 +322,7 @@ h1 {
   position: relative;
   left: 25px;
   border-radius: 4px;
+  background-color: #eeeeee;
 }
 #feeds {
   border: 2px solid black;

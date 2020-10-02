@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import Token from "./Token.jsx"
 
 class Avatar extends React.Component {
   constructor(props) {
@@ -7,12 +8,16 @@ class Avatar extends React.Component {
   }
   render() {
     return (
-      <div className="card">
-        <h1 className="avatar_name"> {this.props.name} </h1>
-        <img className="avatar_image" src={this.props.image}></img>
-        <h2 className="avatar_price">{this.props.price}</h2>
-        <button className="btn" onClick={this.props.handleClick}>purchase</button>
-      </div>
+
+      <div>
+        <Token />
+        <div className="card" id='items'>
+
+          <img className="avatar_image" src={this.props.image}></img>
+          <h1 className="avatar_name" id='avName'> {this.props.avatar} </h1>
+          <h2 className="avatar_price" id='avPrice'>{this.props.price} M-J</h2>
+          <button className="btn" id='btnchop' onClick={this.props.handleClick}>purchase</button>
+        </div></div>
     )
   };
 };
@@ -85,7 +90,7 @@ class Shop extends React.Component {
         <div className="Row">
           {this.state.avatars.map((element, key) => {
             return (
-              <Avatar key={key} name={element.name} image={element.image} price={element.price} handleClick={this.getAvatarPrice} handleClick={this.updateBalance}/>
+              <Avatar key={key} avatar={element.avatar} image={element.image} price={element.price} handleClick={this.getAvatarPrice} handleClick={this.updateBalance} />
             );
           })};
     </div>
