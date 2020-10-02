@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 
-
 // Create a user schema
 const schemaUsers = new mongoose.Schema({
   name: String,
@@ -23,8 +22,8 @@ const Users = mongoose.model('Users', schemaUsers);
 
 // Create avatar schema
 const avatarSchema = mongoose.Schema({
-  name: String,
-  AvatarImage: String,
+  avatar: String,
+  image: String,
   price: Number,
 });
 
@@ -74,15 +73,15 @@ const registerUser = async function (data, res) {
 };
 
 // Create a function to login if the data set by the user correspond with the existed data in the database 
-const loginUser = async function (data, res) {
-  await Users.findOne({ name: data.name }).then((result) => {
+const loginUser = function (data, res) {
+   Users.findOne({ name: data.name }).then((result) => {
     console.log(result)
     if (result === null) {
       res.send({ Registred: false });
     } else {
       // Compare the current user password with the existing hashed password stored in the database
-      bcrypt.compare(result.password, hash, (err, res) => {
-        if (res === true) {
+      bcrypt.compare(data.password, result.password, (err, result) => {
+        if (result === true) {
           res.send({
             Registred: true,
             data: { name: result.name, Id: result.AccountNumber, skin: result.currentskin },
@@ -95,14 +94,14 @@ const loginUser = async function (data, res) {
   });
 };
 
-//
+// Allow users to choose a character 
 const updateskin = function (id, currentskin, res) {
   Users.update({ AccountNumber: id }, { currentskin }).then(result => {
     res.send("Selected")
   })
 }
 
-// Create a function to find the current balance of the users  
+// Create a function to find the current balance of the online user 
 const findBalance = async function (id, res) {
   await Users.findOne({ AccountNumber: id })
     .then((data) => {
@@ -114,13 +113,37 @@ const findBalance = async function (id, res) {
     })
 };
 
-
-// Update user's balance after a purchase
+// Update user's balance after making a purchase
 const updateBalance = function (id, balance, res) {
   Users.update({ AccountNumber: id }, { balance }).then(result => {
     res.send("Balance updated")
   });
 };
+
+const schemainvitationid=new mongoose.Schema({Iid:Number})// InvitationsId
+
+const invitationid=mongoose.model('invitationid', schemainvitationid);
+
+const Iid=new invitationid({Iid:0})
+
+const invitation=async function(from,to,res){
+  console.log(to)
+  var fromN=''
+  var Nid=null
+  await Users.findOne({ AccountNumber: from }).then((result) => {fromN=result.name})
+  await invitationid.findOne().then(data=>{
+    Nid=data.Iid
+  })
+  await invitationid.update({},{Iid:Nid+1})
+  await Users.update({AccountNumber:from},{$push:{invitation:{from:fromN,To:to,id:Nid}}}).
+then(res.send())
+}
+
+const fetchinvitations=function(id,res){
+  Users.findOne({AccountNumber:id}).then(data=>{
+    res.send(data.invitation)
+  })
+  }
 
 module.exports = {
   registerUser,
@@ -131,4 +154,7 @@ module.exports = {
   Avatar,
   updateBalance,
   findBalance,
+  Iid,
+  invitation,
+  fetchinvitations
 };
