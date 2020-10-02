@@ -1,60 +1,98 @@
 import React from "react";
-import Navbar from "./navbar.jsx";
+import axios from "axios";
 import Token from "./token.jsx";
+import { get } from "mongoose";
 
 class Avatar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
   }
+
+  handleClick(e){
+var price=this.props.price
+    this.props.handleClick(price)
+  }
+
   render() {
     return (
-      <div className="Column">
-        <h1 className="avatar_name"> {this.props.avatar} </h1>
-        <h3 className="avatar_name">price:{this.props.price} </h3>
-        <img className="avatar_image" src={this.props.image}></img>
-        <button className="btn">purchase</button>
+      <div>
+        <div  className="card" id="items">
+          <img className="avatar_image" src={this.props.image}></img>
+          <h1 className="avatar_name" id="avName">
+            {" "}
+            {this.props.avatar}{" "}
+          </h1>
+          <h2 className="avatar_price" id="avPrice">
+          {this.props.price} M-J
+          </h2>
+          <button className="btn" id="btnchop" onClick={this.handleClick}>
+            purchase
+          </button>
+        </div>
       </div>
     );
   }
 }
 
-const character = [
-  {
-    avatar: "pokemon",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-  {
-    avatar: "heyy",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-  {
-    avatar: "heyy",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-  {
-    avatar: "heyy",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-  {
-    avatar: "heyy",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-  {
-    avatar: "heyy",
-    image:
-      "https://fr.web.img2.acsta.net/r_640_360/newsv7/19/11/20/17/13/0883987.jpg",
-  },
-];
-
 class Shop extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      avatars: [],
+      price: "",
+      balance: "",
+    };
+
+    this.updateBalance = this.updateBalance.bind(this);
+    this.getCardPrice = this.getCardPrice.bind(this);
+  }
+
+  componentDidMount() {
+    axios
+      .get("/shop")
+      .then((response) => {
+        this.setState({ avatars: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    axios
+      .get("/balance")
+      .then((response) => {
+        this.setState({ balance: response.data.Balance });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  getCardPrice(price) {
+    this.setState({ price });
+   setTimeout(() => {
+    console.log("price=>", this.state.price)
+   }, 100);;
+  }
+
+  updateBalance() {
+    axios({
+      url: "/purchase",
+      method: "post",
+      data: {
+        Balance: this.state.balance - this.state.price,
+      },
+    }).then((data) => {
+      console.log("data =>", data);
+      //   save data in the database
+      //   this.props.IdA(data.data.AccountNumber);
+          // .then(item => {
+          //   res.send("item saved to database");
+          // })
+          // .catch(err => {
+          //   res.status(400).send("unable to save to database");
+          // });
+    });
   }
 
   render() {
@@ -63,15 +101,19 @@ class Shop extends React.Component {
         <Token />
         <div className="shopBody">
           <div className="Row">
-            {character.map((element, key) => {
+            {this.state.avatars.map((element, key) => {
+              console.log(this.state.avatars)
               return (
                 <Avatar
                   key={key}
                   avatar={element.avatar}
                   image={element.image}
+                  price={element.price}
+                  handleClick={ this.getCardPrice}
                 />
               );
             })}
+            ;
           </div>
         </div>
       </div>

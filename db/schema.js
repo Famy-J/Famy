@@ -24,6 +24,14 @@ const feedbacksSchema = new mongoose.Schema({
 });
 const Feedbacks = mongoose.model("Feedbacks", feedbacksSchema);
 
+const avatarSchema = mongoose.Schema({
+  avatar: String,
+  image: String,
+  price: Number,
+});
+
+const Avatar = mongoose.model("Avatar", avatarSchema);
+
 const id = new AccountNumberdB({ AccountNumber: 0 });
 
 const registerUser = async function (data, res) {
@@ -76,6 +84,21 @@ const loginUser = async function (data, res) {
   });
 };
 
+// const findBalance = async function (id, res) {
+//  await Users.findOne({ name: id }).then(result=>{
+//     res.send(result)
+//     console.log("donee");
+//   }).catch(e=>{
+//     res.send('fail')
+//   })
+// };
+
+const updateTokens = function (id, balance, res) {
+  Users.update({ Balance: balance }, { balance }).then((result) => {
+    res.send(result)
+  });
+};
+
 const updateskin = function (id, currentskin, res) {
   Users.update({ AccountNumber: id }, { currentskin }).then((result) => {
     res.send("Selected");
@@ -85,7 +108,10 @@ module.exports = {
   registerUser,
   loginUser,
   Users,
+  Avatar,
   id,
   updateskin,
   Feedbacks,
+  updateTokens,
+  // findBalance,
 };
