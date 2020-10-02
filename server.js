@@ -76,6 +76,17 @@ app.get("/ban", async (req, res) => {
       res.send(err);
     });
 });
+app.post("/tokens/users", async (res, req) => {
+  // const update = { token: res.body.token };
+  // const filter = {id: res.params.id};
+  // await dbF.Users.findByIdAndUpdate(filter, update)
+  //   .then((result) => {
+  //     res.json(result);
+  //   })
+  //   .catch((e) => {
+  //    console.log(e);
+  //   });
+});
 //////////////////////Socket Io
 
 const server = http.createServer(app);
