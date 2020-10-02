@@ -10,6 +10,7 @@ const game=require("./Game/game")
 const dbF=require("./db/schema");
 const { id } = require('./db/schema');
 
+
 ////Map Matrix
 var matrix = Array.from(Array(27), (x) => Array(30).fill(0));
 
@@ -50,7 +51,7 @@ app.post("/position",(req,res)=>{
   res.send()
 })
 
-app.post('/selectChar',(req,res)=>{ // Will Update the account skin with the selected skin from the signup0
+app.post('/selectChar',(req,res)=>{ // Update the account skin with the selected skin from the signup0
   console.log(req.body)
 dbF.updateskin(req.body.id,req.body.currentskin,res)
 })
@@ -59,28 +60,28 @@ app.post('/login',(req,res)=>{ //Deal with the login request to the server
 dbF.loginUser(req.body,res)
 })
 
-app.post("/register", (req, res) => {
+app.post("/register", (req, res) => { 
   dbF.registerUser(req.body,res)
   })
 
-  app.post("/Rposition",(req,res)=>{ // Randomly Chose an empty place for the newuser in the Matrix
+  app.post("/Rposition",(req,res)=>{ // Randomly Choose an empty place for the newuser in the Matrix
     randomSpawn(req.body.id,res)
     console.table(matrix)
   });
 
-  app.get('/shop', (req,res) => {
+  app.get('/shop', (req,res) => { // Fetch avatar data from database
     dbF.Avatar.find({}, (err,data) => {
       err ? console.log(err) : res.send(data)
     });
   });
   
-  app.post('/', (req,res) => {
+  app.get('/token', (req,res) => { // Fetch user's current balance from database
     dbF.findBalance(req.body.id, res) 
   });
   
-  app.post('/',(req,res)=>{
+  app.post('/token',(req,res)=>{ // Update user's balance
     console.log(req.body)
-  dbF.updateTokens(req.body.id, req.body.balance, res)
+  dbF.updateBalance(req.body.id, req.body.balance, res)
   });
 
 //////////////////////Socket Io

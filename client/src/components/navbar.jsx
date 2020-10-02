@@ -4,11 +4,17 @@ class Navbar extends React.Component {
     constructor(props){
         super(props)
         this.state={
-
         }
     }
     render() {
-      return <h1>Bonjour</h1>;
+      return <div className="container">
+      <ul>
+        <li><a>HOME</a></li>
+        <li><a>SHOP</a></li>
+        <li><a>ABOUT</a></li>
+        <li onClick={()=>{location.reload()}}><a>LOGOUT</a></li>
+      </ul>
+    </div>;
     }
   }
 

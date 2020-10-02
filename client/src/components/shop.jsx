@@ -9,7 +9,7 @@ class Avatar extends React.Component {
     return (
       <div className="card">
         <h1 className="avatar_name"> {this.props.name} </h1>
-        <img className="avatar_image" src={this.props.image}></img>
+        <img className="avatar_image" src={this.props.avatarImage}></img>
         <h2 className="avatar_price">{this.props.price}</h2>
         <button className="btn" onClick={this.props.handleClick}>purchase</button>
       </div>
@@ -31,51 +31,51 @@ class Shop extends React.Component {
     this.getAvatarPrice = this.getAvatarPrice.bind(this);
   }
 
+  // Fetching avatar data to display it when the user switch to the shop component  
   componentDidMount() {
     axios.get('/shop')
       .then(response => {
         this.setState({ avatars: response.data });
-        console.log(this.state)
+        // console.log(this.state)
       })
       .catch(error => {
         console.log(error)
       })
   };
 
-  getUsersBalance() {
-    axios.get('/')
+  // Fetching the user's current balance
+  componentDidMount() {
+    axios.get('/token')
       .then(response => {
-        this.setState({ balance: response.data.Balance });
+        this.setState({ balance: response.data });
         console.log(this.state)
       })
       .catch(error => {
         console.log(error)
       });
-  };
+  }
 
+  // Get avatar price to handleClick button 
   getAvatarPrice(e) {
     var price = e.target.className('avatar_price')
-    console.log(e.target)
+    // console.log(e.target)
     this.setState({ price })
-    console.log(this.state.price)
+    // console.log(this.state.price)
   };
 
+  // Update user's balance after making a purchase and saving it in the database
   updateBalance() {
     axios({
-      url: '/',
+      url: '/token',
       method: 'post',
       data: {
         Balance: this.state.balance - this.state.price,
       }
     }).then((data) => {
       this.props.IdA(data.data.AccountNumber)
+      this.setState({ balance: this.state.balance - this.state.price })
+      location.reload();
       //save data in the database
-      //   .then(item => {
-      //     res.send("item saved to database");
-      //   })
-      //   .catch(err => {
-      //     res.status(400).send("unable to save to database");
-      //   });
     });
   };
 
@@ -85,10 +85,11 @@ class Shop extends React.Component {
         <div className="Row">
           {this.state.avatars.map((element, key) => {
             return (
-              <Avatar key={key} name={element.name} image={element.image} price={element.price} handleClick={this.getAvatarPrice} handleClick={this.updateBalance}/>
+              <Avatar key={key} name={element.name} image={element.avatarImage} price={element.price} handleClick={this.getAvatarPrice} handleClick={this.updateBalance} />
             );
           })};
-    </div>
+          <h2>{this.state.Balance}</h2>
+        </div>
       </div>
     )
   };

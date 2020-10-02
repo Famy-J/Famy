@@ -27,8 +27,7 @@ class Signup extends React.Component {
         })
   }
     render() {
-      return <div className="body">
-        
+      return <div className="body">   
       <h1>Sign Up</h1>
       <input type="username" placeholder="Username" onChange={(e)=>{this.setState({username:e.target.value})}}  required/>
       <input type="email" placeholder="Email" onChange={(e)=>{this.setState({email:e.target.value})}}  required/>
