@@ -38,7 +38,15 @@ For the confidentiality of your data we use hight capacity of encrypting certain
 
 - For the user authentication we use a process to secure your personal data, you can check the "login.jsx" component.
 
-- Welcome to the life chat simulation. Enjoy :D 
+- Welcome to the life chat simulation. 
+PS : As a user you should click on your avatar character and after that you can move around the map using the gaming_buttons:
+ 
+{
+	z : move up,
+	s : move down,
+	q : move left,
+	d : move right
+}
 
 - As a user you can interact with other connected users to start a live conversation, if you click on different users that means you have already sent an invitation request from x to y.
 Go throught the files "simulation.jsx", "Mainchars.jsx" "invitations.jsx", "chat.jsx" and "Friends.jsx" also you can check the file "game.js" in the repository Game which provide the user with a random position into the map.
