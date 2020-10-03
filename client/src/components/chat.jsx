@@ -7,8 +7,19 @@ class Chat extends React.Component {
             message:""
         }
         this.sendmessage=this.sendmessage.bind(this)
+        this.sendreport=this.sendreport.bind(this)
     }
-    
+    sendreport(e){
+       
+        var msgnumber=e.target.id[(e.target.id).length-1]
+        console.log()
+        var message=this.props.messages.Messages[msgnumber]
+        axios({
+            url: "/reports",
+            method: 'post',
+            data:{to:e.target.id.substring(0, e.target.id.length - 1),message:message.message}
+          })
+    }
     sendmessage(){ //send Request to the server To save the message in the db
  
         axios({
@@ -23,10 +34,11 @@ class Chat extends React.Component {
      {this.props.messages.Messages.map((elem,index)=>{
          if(this.props.from==elem.from){
             return <div className="messages messages--sent">
-            <div className="message">{elem.message}</div> </div>
+            <div className="message" key={index}>{elem.message}</div></div>
          }else{
-             return <div className="messages messages--received">
-             <div className="message">{elem.message}</div>
+             return <div className="messages messages--received" key={index}>
+                 
+              <div className="message"><img src="report.png" className="test0" onClick={this.sendreport} id={elem.from+index}/>{elem.message}</div>
              </div>
          }
      })}
@@ -44,26 +56,3 @@ class Chat extends React.Component {
   }
   
   export default Chat
-  {/* {this.props.chat.map((elem,index)=>{
-              if(this.props.from==elem.from+""){
-                  return <div className="messages messages--sent">
-                        <div className="message">{elem.from}: {elem.message}</div> </div>
-              }else{
-                  return  <div className="messages messages--received">
-                          <div className="message">{elem.from}: {elem.message}</div>
-                          </div>
-              }
-          })} */}
-
-        //   <div className="messages messages--received">
-        //   <div className="message">This codepen is an exemple of</div>
-        //       <div className="message">how to create the Facebook thumb up</div>
-        //   </div>
-        //   <div className="messages messages--sent">
-        //       <div className="message">Try to type</div>
-        //       <div className="message">or click the thumb up!</div>
-        //       <div className="message">;)</div>
-        //   </div>
-        //   <div className="messages messages--received">
-        //       <div className="message">Enjoy!</div>
-        //   </div>

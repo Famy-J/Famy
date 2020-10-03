@@ -256,7 +256,7 @@ body{
 }
 
 .conversation {
-
+ border-radius:5px;
   background: black;
   height: calc(100% - 50px);
   overflow: auto;
@@ -330,7 +330,7 @@ body{
   position: relative;
   vertical-align: middle;
   font-size: 14px;
-  border-radius: 5px;
+  border-radius: 7px;
   top: -9px;
 }
 .text-bar__thumb {
@@ -374,10 +374,11 @@ body{
 }
 /* ///////////////NEW css */
 .aboutus {
+  color:white;
   position: relative;
-  top: 6px;
+  top: 16px;
   left: 250px;
-  background: lightblue;
+  background: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -385,13 +386,14 @@ body{
   font-family: "Montserrat", sans-serif;
   /* height: 65vh; */
   width: 790px;
-  border: #ff2626;
+  border: #f6f5f7;
   border-radius: 5%;
   border-style: solid;
   height: 544px;
+  text-align:center;
 }
 #contact{
-  position: relative;
+ position: relative;
   position: relative;
   top: -30px;
   left: 3px;
@@ -399,7 +401,7 @@ body{
     
 }
 #feedback {
-  
+
   background-color: #ff2626;
   position: relative;
   top: -29px;
@@ -409,7 +411,6 @@ body{
 /* /////////Token////// */
 #tokens {
   position: absolute;
-
   width: 100px;
   height: 40px;
   border-radius: 4px;
@@ -424,6 +425,204 @@ body{
 #token {
   position: relative;
   top: -10px;
+  left:-8px;
   color: white;
 }
 /* ////////////// */
+#Fid{
+  position:relative;
+  top:-35px;
+  border-radius:5px;
+}
+#devName{
+  color:gray;
+}
+/* //////////////////// Admin Css//////////// */
+#admin {
+  border: 3px solid black;
+  width: 821px;
+  position: relative;
+  padding: 0px;
+  padding-left: 55px;
+  left: 208px;
+  padding-top: 17px;
+  top: 69px;
+  height: 500px;
+}
+
+#ban {
+  color: white;
+  margin: -5px;
+  position: relative;
+  left: 273px;
+}
+
+#userBann {
+  position: relative;
+  width: 394px;
+  margin-left: -45px;
+  margin-top: 33px;
+  top: 68px;
+}
+
+#repo {
+  border: 1px solid black;
+  width: 416px;
+  height: 350px;
+  position: relative;
+  top: -224px;
+  left: 376px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#repN {
+  position: relative;
+  left: 146px;
+  top: -20px;
+}
+.reposes {
+  border: 1px solid black;
+  width: 361px;
+  height: 43px;
+  position: relative;
+  left:20px;
+  border-radius: 4px;
+  background-color: #eeeeee;
+  margin-top: 11px;
+}
+
+.Xbutt {
+  padding: 11px;
+    color: red;
+    background-color: white;
+    position: absolute;
+    left: 311px;
+    top: 2px;
+    background-color: red;
+    color: white;
+    padding: 14px 20px;
+    margin: -2px 0px;
+    border: inherit;
+    cursor: pointer;
+    width: 14%;
+    opacity: 0.9;
+    border-radius: 0px;
+}
+
+#feed {
+  position: relative;
+  left: 287px;
+  top: -19px;
+}
+
+#back {
+  position: relative;
+  top: -74px;
+  left: -47px;
+  padding: 8px;
+}
+
+#feeds {
+  border: 2px solid black;
+  position: relative;
+  left: -46px;
+  top: -54px;
+  width: 855px;
+  height: 422px;
+  overflow-y: scroll;
+  overflow-x: visible;
+}
+
+#feedhold {
+  border: 1px solid black;
+  width: 807px;
+  /* height: 59px; */
+  position: relative;
+  left: 25px;
+  top: 15px;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  text-align: center;
+}
+
+.test0{
+         position: absolute;
+    width: 12px;
+    height: 23px;
+    margin: 0%;
+    left: 5px;
+}
+/* ////////Shop css////// */
+.Row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  margin-left: 48px;
+ 
+}
+.shopBody {
+  position: relative;
+  top: -3px;
+    left: 266px;
+  background: #f6f5f7;
+  
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  /* height: 65vh; */
+  width: 700px;
+  border: solid black 2px;
+  /* border-radius: 10%; */
+  margin-top: 25px;
+  border-style: solid;
+  border-radius: 10px;
+  background: #8343c300;
+  height: 515px;
+ width: 786px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+#items{
+  width: 193px;
+    height: 238px;
+    margin-top: 9px;
+    border: 1px solid black;
+
+}
+.avatar_image {
+  /* text-align: center; */
+  
+  position: relative;
+  left: 37px;
+  height: 77px;
+  top: 7px;
+}
+.avatar_name {
+  width: auto;
+  text-align: center;
+  color: #aaaabb;
+  height: 41px;
+  position: relative;
+  left: -2px;
+  font-size: 21px;
+}
+.avatar_price {
+  position: relative;
+  left: 66px;
+  font-size: 19px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+#btnchop{
+  margin-left: 33px;
+    position: relative;
+    left: -11px;
+    font-size: 9px;
+}
+.btn {
+  margin-left: 30px;
+  position: relative;
+  left: -20px;
+}

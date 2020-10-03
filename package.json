@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "light-toast": "^0.3.0",
     "mongoose": "^5.10.5",

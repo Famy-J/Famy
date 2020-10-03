@@ -93,6 +93,10 @@ class Simulation extends React.Component {
           method: 'post',
           data:{id:this.props.data.Id,Face:`./chars/${this.props.data.skin}/FD/fd0.png`,skin:this.props.data.skin}
         }).then(data=>{
+          
+          setTimeout(()=>{
+            this.setState({UnmountPX:(this.state.PsPositions[this.state.id].split("-")[0])*1,UnmountPY:(this.state.PsPositions[this.state.id].split("-")[1].split("=")[0]*1)})
+          },1000)
           this.setState({MpPosition:data.data})
         })
     }

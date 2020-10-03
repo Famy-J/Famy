@@ -52,8 +52,8 @@ class AboutUs extends React.Component {
           <a id="namedevlop" href="https://github.com/Yassine-Knaizia">*Yassine Knaizia*</a>{" "}
           <br />
         </h4>
-        <h3 id="contact" >Contact Us</h3>
-        <input
+        <h3 id="contact" >FeedBack</h3>
+        <input id="Fid"
           type="text"
           placeholder="send us a feedback or find support"
           onChange={this.handleCange}

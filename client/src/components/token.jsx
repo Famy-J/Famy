@@ -11,12 +11,12 @@ class Token extends React.Component {
             method: "POST",
             url: "/balance",
             data:{id:this.props.userid,balance:(document.getElementById("token").innerHTML.split("_")[0])*1}
-          }).then(result=>{
-            // console.log(result.data)
-            // this.setState({balance:result.data.Balance})
-           
           })
-      },5000)
+      },100),
+      fd:setInterval(()=>{
+this.setState({balance:this.state.balance+10})
+this.props.Pass(this.state.balance)
+    },10000)
     };
   }
   componentDidMount() {
@@ -30,14 +30,24 @@ class Token extends React.Component {
         this.props.Pass(result.data.balance)
       })
     }, 100);
-    setInterval(()=>{
-this.setState({balance:this.state.balance+5})
-this.props.Pass(this.state.balance+5)
-    },20000)
+
+    
   }
-componentWillUnmount(){
-  clearInterval(this.state.Fb)
-}
+  
+   static getDerivedStateFromProps(nextprops,prevstate){
+   console.log(nextprops.newbalance,prevstate)
+   if(nextprops.newbalance!=undefined){
+     if(nextprops.newbalance!==prevstate.balance){
+      console.log("changed")
+      return {
+        balance:nextprops.newbalance
+            }
+     }
+   }else{
+     return{}
+   }
+    }
+
   render() {
     return (
       <div id="tokens">

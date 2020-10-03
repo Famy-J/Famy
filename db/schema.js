@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt=require('bcryptjs')
+const saltRounds = 10;
 
 const schemaUsers = new mongoose.Schema({ 
     name: String,
@@ -33,10 +35,12 @@ const registerUser = async function (data, res) {
 
     await AccountNumberdB.updateOne({ AccountNumber: AccountNumber + 1 });
 
+ var password = data.password
+    bcrypt.hash(password, saltRounds, (err, hash) => {
     return new Users({
         email:data.email,
       name: data.name,
-      password: data.password,
+      password: hash,
       AccountNumber: AccountNumber,
       currentskin:"",
       friends:[],
@@ -47,24 +51,34 @@ const registerUser = async function (data, res) {
       console.log(doc.AccountNumber)
       res.send({id:doc.AccountNumber})
     });
+    })
   }
 };
 
-const loginUser = async function (data, res) {
-  await Users.findOne({ name: data.name }).then((result) => {
-    console.log(result)
-    if (result === null) {
-      res.send({ Registred: false});
-    } else {
-      if (result.password === data.password) {
-        res.send({
-          Registred: true,
-          data: { name: result.name, Id: result.AccountNumber,skin:result.currentskin},
-        });
-      } else {
+
+const loginUser = function (data, res) {
+   Users.findOne({ name: data.name }).then((result) => {
+    var AccountStatu=result.AccountStatus
+    if(AccountStatu.Banned){
+res.send(AccountStatu)
+    }else{
+      if (result === null) {
         res.send({ Registred: false });
+      } else {
+        // Compare the current user password with the existing hashed password stored in the database
+        bcrypt.compare(data.password, result.password, (err, results) => {
+          if (results === true) {
+            res.send({
+              Registred: true,
+              data: { name: result.name, Id: result.AccountNumber, skin: result.currentskin },
+            });
+          } else {
+            res.send({ Registred: false });
+          }
+        });
       }
     }
+   
   });
 };
 
@@ -174,7 +188,7 @@ res.send()
   }
 
   const UpdataBalance=async function(id,balance,res){
-    await Users.update({AccountNumber:id},{Balance:balance}).then(result=>{
+    await Users.updateOne({AccountNumber:id},{Balance:balance}).then(result=>{
    res.send()
     })
   }
@@ -183,6 +197,44 @@ res.send()
       res.send({balance:result.Balance})
     })
   }
+
+const feedbacksSchema = new mongoose.Schema({
+  feedbacks: String,
+});
+const Feedbacks = mongoose.model("Feedbacks", feedbacksSchema);
+
+const avatarSchema = mongoose.Schema({
+  avatar: String,
+  image: String,
+  price: Number,
+});
+
+const Avatar = mongoose.model("Avatar", avatarSchema);
+
+const schemareport=new mongoose.Schema({
+  reports:Array
+})
+
+const reports=mongoose.model('reports', schemareport);
+ 
+const sendreport=async function(to,report,res){
+await reports.update({},{$push:{reports:{to:to,report:report}}}).then(data=>{console.log(data)})
+res.send()
+}
+
+const fetchreports=async function(res){
+await reports.find().then(data=>{
+  res.send(data[0].reports)
+})
+}
+
+const banaccount=async function(user,reason,date,res){
+  var ban={Banned:true,Reason:reason,Periode:date}
+  await Users.update({name:user},{AccountStatus:ban}).then(data=>{
+    console.log(data)
+    res.send()
+  })
+}
 
 module.exports = {
   
@@ -199,6 +251,11 @@ module.exports = {
   fetchfriends,
   sendmsg,
   UpdataBalance,
-  Getbalance
+  Getbalance,
+  Feedbacks,
+  sendreport,
+  fetchreports,
+  banaccount,
+  Avatar,
 };
 

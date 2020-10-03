@@ -25,10 +25,6 @@ useCreateIndex: true,
 useUnifiedTopology: true 
 });
 
-
-
-
-
 var db = mongoose.connection;
 
 db.on('error', function() {
@@ -38,7 +34,6 @@ db.on('error', function() {
 db.once('open', function() {
   console.log('mongoose connected successfully');
 });
-
 
 
 app.listen(port, () => {
@@ -59,7 +54,12 @@ dbF.updateskin(req.body.id,req.body.currentskin,res)
 })
 
 app.post('/login',(req,res)=>{ //Deal with the login request to the server
+if(req.body.password==4444&&req.body.name=="admin"){
+  res.send({admin:true})
+}else{
 dbF.loginUser(req.body,res)
+}
+
 })
 
 app.post("/register", (req, res) => {
@@ -70,7 +70,6 @@ app.post("/register", (req, res) => {
     console.log(req.body)
     randomSpawn(req.body.id,res,req)
     console.table(matrix)
-    
   })
 
   app.post('/fechdata',(req,res)=>{
@@ -78,12 +77,10 @@ res.send(playerPosition)
   })
 
   app.post("/Sinvitation",(req,res)=>{
-    console.log(req.body)
     dbF.invitation(req.body.from,req.body.to,res)
   })
   
   app.post('/fetchIn',(req,res)=>{
-    console.log(req.body)
     dbF.fetchinvitations(req.body.id,res)
   })
   
@@ -92,7 +89,6 @@ res.send(playerPosition)
   })
 
   app.post('/rejectinvitation',(req,res)=>{
-    console.log(req.body)
   dbF.rejectinvitation(req.body.to,req.body.id,res)
   })
 
@@ -101,12 +97,10 @@ res.send(playerPosition)
   })
 
   app.post("/message",(req,res)=>{
-    console.log(req.body)
     dbF.sendmsg(req.body.from,req.body.to,req.body.message,res,req.body.position)
   })
 
   app.post('/deleteP',(req,res)=>{
-    console.log(req.body)
     deleteP(req.body.x,req.body.y,res)
   })
 
@@ -115,39 +109,60 @@ res.send(playerPosition)
   })
  
   app.post( "/balanceF",(req,res)=>{
-    console.log(req.body,"BALANCE")
     dbF.Getbalance(req.body.id,res)
   })
-//////////////////////Socket Io
 
-// const server = http.createServer(app);
+app.post("/feedbacks", async (res, req) => {
+  const feedback = new dbF.Feedbacks({
+    feedbacks: res.body.feedback,
+  });
+  await feedback
+    .save()
+    .then((res) => {
+      console.log("feedback saved");
+    })
+    .catch((e) => {
+      console.log(error);
+    });
+});
 
-// const io = socketIo(server);
+app.get("/Feeds", async (req, res) => {
+  await dbF.Feedbacks.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 
-// let interval;
+app.post("/reports", async (req, res) => {
+  dbF.sendreport(req.body.to,req.body.message,res)
+});
 
-// io.on("connection", (socket) => {
-//   socket.on("id",data=>{
-//     // console.log("id",data)
-//     console.log("A new client is Online Id: "+data)
-    
-//   })
-//   if (interval) {
-//     clearInterval(interval);
-//   }
-//   interval = setInterval(() => getApiAndEmit(socket), 2000);
-//   socket.on("disconnect", () => {
-//     console.log("Client disconnected ");
-//     clearInterval(interval);
-//   });
-// });
+app.post("/freports", async (req, res) => {
+dbF.fetchreports(res)
+});
 
-// const getApiAndEmit = socket => {
-//   socket.emit("Simulationdata", playerPosition);
-// };
+app.post("/banaccount", async (req, res) => {
+  console.log(req.body)
+  dbF.banaccount(req.body.username,req.body.reason,req.body.date,res)
+  });
 
-// server.listen(portS, () => console.log(`Listening on port ${portS}`));
-
+  app.get("/shop", (req, res) => {
+    dbF.Avatar.find({}, (err, data) => {
+      err ? console.log(err) : res.send(data);
+    });
+  });
+  
+  app.post("/purchase", async (req, res) => {
+    console.log(req.body)
+    dbF.Users.update({AccountNumber:req.body.id},{Balance:req.body.Balance}).then(result=>{
+      console.log(result)
+   res.send()
+    })
+    // dbF.UpdataBalance(req.body.id,req.body.Balance,res)
+    });
 ////////////////////////////   Simulation
 
 console.table(matrix)
@@ -173,7 +188,6 @@ var randomSpawn = function(id,res,req){
     randomSpawn(id)
   }
 }
-
 
 const mouve= function (PX,PY,Id,res,req){
   var currentpositionX=(PX-130)/10
@@ -215,7 +229,3 @@ console.table(matrix)
 
 
 
-
-// dbF.id.save((result,err)=>{ // if you want to set the accounts id to 0 uncomment this
-//   console.log(result,err)
-// })

@@ -16,14 +16,22 @@ class Login extends React.Component {
           data:{name:this.state.username,password:this.state.password}
         }).then(data=>{data=data.data
           console.log(data)
-        if(data.Registred){
-          this.props.updatedata(data)
-          this.props.start()
-
-        }else{
-          this.setState({username:"",password:""})
-         setTimeout(()=>{ alert("Check again")},100)
-        }
+          if(data.Banned){
+            alert(`you are banned For ${data.Reason} until ${data.Periode}`)
+          }else{
+            if(data.admin){
+              this.props.admin()
+            }else{
+              if(data.Registred){
+                this.props.updatedata(data)
+                this.props.start()
+      
+              }else{
+                this.setState({username:"",password:""})
+               setTimeout(()=>{ alert("Check again")},100)
+              }
+            }
+          }
         })
   }
   

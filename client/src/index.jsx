@@ -9,6 +9,7 @@ import Logo from "./components/logo.jsx"
 import Signup0 from "./components/signup0.jsx"
 import AboutUs from "./components/aboutUs.jsx"
 import Token from "./components/token.jsx"
+import Admin from "./components/Admin.jsx"
 class App extends React.Component {
     constructor(props){
         super(props)
@@ -25,7 +26,9 @@ class App extends React.Component {
           displaySignup0:false,
           displayAboutUs:false,
           displayS:false,
-          displayToken:false
+          displayToken:false,
+          displayadmin:false,
+          
         }
         this.UpdateData=this.UpdateData.bind(this)
         this.selectCharId=this.selectCharId.bind(this)
@@ -38,6 +41,14 @@ class App extends React.Component {
         this.Sset=this.Sset.bind(this)
         this.Userid=this.Userid.bind(this)
         this.PassTokenToParent=this.PassTokenToParent.bind(this)
+        this.admin=this.admin.bind(this)
+        this.changebalance=this.changebalance.bind(this)
+    }
+    changebalance(b){
+      this.setState({newbalance:b})
+    }
+    admin(){
+    this.setState({displayadmin:true,displaylogin:false,displaylogo:false})
     }
      PassTokenToParent(token){
        this.setState({token:token})
@@ -84,15 +95,16 @@ class App extends React.Component {
     
     render() {
       return <div>
-          {this.state.displayToken?<Token userid={this.state.ID} Pass={this.PassTokenToParent}/>:null}
+          {this.state.displayToken?<Token userid={this.state.ID} Pass={this.PassTokenToParent} newbalance={this.state.newbalance}/>:null}
           {this.state.displaynavbar?<NavBar Aboutus={this.displayAboutUs} Shop={this.displayshop} Home={this.displaysHome}/>:null}
           {this.state.displaylogo?<Logo/>:null}
           {this.state.displaysignup?<Signup IdS={this.selectCharId} toogle={this.toggleLoginSignup}/>:null}
-          {this.state.displayshop?<Shop token={this.state.token}/>:null}
-          {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData}/>:null}
+          {this.state.displayshop?<Shop token={this.state.token} id={this.state.ID} setnewbalance={this.changebalance}/>:null}
+          {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData} admin={this.admin}/>:null}
           {this.state.displaySimulation?<Simulation data={this.state.userdata.data} userid={this.Userid}/>:null}
           {this.state.displaySignup0?<Signup0 id={this.state.ID} login={this.Mlogin}/>:null}
           {this.state.displayAboutUs?<AboutUs/>:null}
+          {this.state.displayadmin?<Admin/>:null}
             </div>
     }
   }
