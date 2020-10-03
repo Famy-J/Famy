@@ -26,7 +26,7 @@ Other than typical system chat rooms, we allow users to win gifts like e-cards. 
 
 // Run the command $ npm run react to transpile jsx extentions.
 // Run the command $ npm start to launch the server connected on port 3000.
-// Check the "webpack.config.js" module to visualise the entry jsx files being bundled for the distribution of the output.
+// Don't make any changes on the module "webpack.config.js" 
 
 You can visualise the UI on your browser on "http://locahost:3000"
 
