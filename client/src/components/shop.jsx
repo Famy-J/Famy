@@ -82,10 +82,11 @@ class Shop extends React.Component {
         url: "/purchase",
         method: "post",
         data: {
-          Balance: his.state.balance - this.state.price,
+          id:this.props.id,
+          Balance: this.state.balance - this.state.price,
         },
       }).then((data) => {
-        console.log("data =>", data.data.Balance);
+        console.log("data =>", data);
         //   save data in the database
       });
     }else{
