@@ -19,7 +19,7 @@ class Avatar extends React.Component {
     console.log(this.props.price)
     return (
       <div>
-        <div  className="card" id="items">
+        <div className="card" id="items">
           <img className="avatar_image" src={this.props.image}></img>
           <h1 className="avatar_name" id="avName">
             {" "}
@@ -73,7 +73,7 @@ class Shop extends React.Component {
     this.setState({ price });
    setTimeout(() => {
     console.log("price=>", this.state.price)
-   }, 100);;
+   }, 100)
   }
 
   updateBalance() {
