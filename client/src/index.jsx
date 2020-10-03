@@ -19,13 +19,13 @@ class App extends React.Component {
       displaynavbar: true,
       displaylogin: false,
       displaysignup: false,
-      displayshop: false,
+      displayshop: true,
       displaySimulation: false,
       displaylogo: false,
       displaySignup0: false,
       displayToken: false,
       displayAboutUs: false,
-      displayAdmin: true,
+      displayAdmin: false,
     };
     this.UpdateData = this.UpdateData.bind(this);
     this.selectCharId = this.selectCharId.bind(this);

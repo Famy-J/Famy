@@ -189,17 +189,18 @@ input {
 }
 .avatar_name {
   width: auto;
-    text-align: center;
-    color: darkblue;
-    height: 24px;
-    position: relative;
-    left: -2px;
-    font-size: 21px;
+  text-align: center;
+  color: #aaaabb;
+  height: 41px;
+  position: relative;
+  left: -2px;
+  font-size: 21px;
 }
 .avatar_price {
   position: relative;
-    left: 66px;
-    font-size: 21px;
+  left: 66px;
+  font-size: 19px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 #token {
   width: 20%;
@@ -229,12 +230,12 @@ input {
   font-family: "Montserrat", sans-serif;
   /* height: 65vh; */
   width: 700px;
-  border: #ffea2b;
+  border: solid black 2px;
   /* border-radius: 10%; */
   margin-top: 25px;
   border-style: solid;
   border-radius: 10px;
-  background: lightblue;
+  background: #8343c300;
   height: 515px;
  width: 786px;
   overflow: scroll;
@@ -245,6 +246,13 @@ input {
     position: relative;
     left: -11px;
     font-size: 9px;
+}
+#shopName{
+  position: relative;
+    margin: 2px;
+    font-size: 36px;
+    left: 331px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 .btn {
   margin-left: 30px;
@@ -273,6 +281,7 @@ input {
   position: relative;
     top: -32px;
     left: 9px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 #contact{
   position: relative;
@@ -308,6 +317,10 @@ input {
 }
 h1 {
   color: white;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 25px;
+  position: relative;
+  top: 18px;
 }
 h4{
   color: white;
