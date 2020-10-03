@@ -17,8 +17,8 @@ body{
     position: relative;
     left:24%;
     height:160px;
-    width:515px;
-    left:410px;
+    width:480px;
+    left:425px;
   }
 
   .container ul {
@@ -187,9 +187,10 @@ body{
  #invitations{
   position: absolute;
   width: 30px;
-  top: 448px;
-  left: 575px;
-  height: 50px;
+  top: 441px;
+  left: 566px;
+  height: 64px;
+  width: 50px;
 }
  #invcontainer{
   position: relative;
@@ -404,7 +405,7 @@ body{
 
   background-color: #ff2626;
   position: relative;
-  top: -29px;
+  top: -41px;
   left: -7px;
 }
 
@@ -480,6 +481,7 @@ body{
   position: relative;
   left: 146px;
   top: -20px;
+  color: white;
 }
 .reposes {
   border: 1px solid black;
@@ -535,7 +537,7 @@ body{
 }
 
 #feedhold {
-  border: 1px solid black;
+  border: 2px solid rgb(255, 255, 255);
   width: 807px;
   /* height: 59px; */
   position: relative;
@@ -625,4 +627,59 @@ body{
   margin-left: 30px;
   position: relative;
   left: -20px;
+}
+#main-logo{
+position: absolute;
+}
+#lg1{
+  position: absolute;
+  width: 54px;
+  top: 120px;
+  left: 24px;
+}
+#lg2{
+  position: absolute;
+  width: 54px;
+  top: 250px;
+  left: 195px;
+}
+#lg3{
+  position: absolute;
+  width: 54px;
+  top: 120px;
+  left: 1279px;
+}
+#lg4{
+  position: absolute;
+  width: 54px;
+  top: 220px;
+  left: 1072px;
+}
+#lg5{
+  position: absolute;
+  width: 183px;
+  top: 488px;
+  left: 136px;
+ 
+}
+#lg6{
+  position: absolute;
+  position: absolute;
+  width: 80px;
+  top: 463px;
+  left: 1007px;
+}
+#lg7{
+  position: absolute;
+    width: 80px;
+    left: 1065px;
+    top: 113px;
+}
+
+.h1a{
+  color: white;
+}
+#abs{
+  position: relative;
+    top: 18px;
 }

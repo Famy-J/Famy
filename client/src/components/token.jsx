@@ -16,7 +16,7 @@ class Token extends React.Component {
       fd:setInterval(()=>{
 this.setState({balance:this.state.balance+10})
 this.props.Pass(this.state.balance)
-    },10000)
+    },30000)
     };
   }
   componentDidMount() {

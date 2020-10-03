@@ -65,7 +65,7 @@ export class Admin extends Component {
           <div>
             <h1 id="ban">Admin Interface</h1>
             <div id="userBann">
-              <h1>Banned Accounts</h1>
+              <h1 className="h1a">Banned Accounts</h1>
               <input
                 type="username"
                 placeholder="Username"
@@ -109,7 +109,7 @@ export class Admin extends Component {
         ) : null}
         {this.state.displayFeedback ? (
           <div>
-            <h1 id="feed">Users Feedbacks</h1>
+            <h1 id="feed" className="h1a">Users Feedbacks</h1>
             <button id="back" onClick={this.handleBack}>
               Back
             </button>

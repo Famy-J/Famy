@@ -14,6 +14,7 @@ class Avatar extends React.Component {
     
     if(this.props.balance>=this.props.price){
       this.props.changeb(this.props.balance-this.props.price)
+      alert("Check Your Gmail For Card-Code")
     }else{
       alert("You dont have enough ToKenS Check AboutUs For MoRe Informations")
     }

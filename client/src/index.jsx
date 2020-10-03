@@ -95,6 +95,13 @@ class App extends React.Component {
     
     render() {
       return <div>
+          <img src="love-logo.png" id="lg1"/>
+          <img src="logo-main-1.png" id="lg2"/>
+          <img src="share-logo.png" id="lg3"/>
+          <img src="chat-main.png" id="lg4"/>
+          <img src="sk0.png" id="lg5"/>
+          <img src="sk1.png" id="lg6"/>
+          <img src="sk3.png" id="lg7"/>
           {this.state.displayToken?<Token userid={this.state.ID} Pass={this.PassTokenToParent} newbalance={this.state.newbalance}/>:null}
           {this.state.displaynavbar?<NavBar Aboutus={this.displayAboutUs} Shop={this.displayshop} Home={this.displaysHome}/>:null}
           {this.state.displaylogo?<Logo/>:null}

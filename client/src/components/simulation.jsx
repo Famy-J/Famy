@@ -121,7 +121,7 @@ class Simulation extends React.Component {
         {this.state.displayFriends?<Friends friends={this.state.friends} chat={this.showchat}/>:null}
         {this.state.displayChat?<Chat messages={this.state.friends[this.state.selectedfriend]} from={this.state.name} position={this.state.selectedfriend}/>:null}
         <img src="Friends.png" id="FriendsLogo" onClick={this.tooglefriends}/>
-        <img src="invitations.png" id="invitations" onClick={this.tooglechatinvitations} />
+        <img src="send-m.png" id="invitations" onClick={this.tooglechatinvitations} />
       </div>
     }
   }
