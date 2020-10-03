@@ -114,11 +114,11 @@ const findBalance = async function (id, res) {
 };
 
 // Update user's balance after making a purchase
-// const updateBalance = function (id, balance, res) {
-//   Users.update({ AccountNumber: id }, { balance }).then(result => {
-//     res.send("Balance updated")
-//   });
-// };
+const updateBalance = function (id, balance, res) {
+  Users.update({ AccountNumber: id }, { balance }).then(result => {
+    res.send("Balance updated")
+  });
+};
 
 const schemainvitationid=new mongoose.Schema({Iid:Number})// InvitationsId
 
@@ -152,8 +152,8 @@ module.exports = {
   id,
   updateskin,
   Avatar,
-  // updateBalance,
-  findBalance,
+  updateBalance,
+  // findBalance,
   Iid,
   invitation,
   fetchinvitations,
