@@ -58,14 +58,15 @@ const registerUser = async function (data, res) {
 
 const loginUser = function (data, res) {
    Users.findOne({ name: data.name }).then((result) => {
-    var AccountStatu=result.AccountStatus
-    if(AccountStatu.Banned){
-res.send(AccountStatu)
+     if(result===null){
+      res.send({ Registred: false });
+      
+     console.log(result)
     }else{
-      if (result === null) {
-        res.send({ Registred: false });
-      } else {
-        // Compare the current user password with the existing hashed password stored in the database
+        var AccountStatu=result.AccountStatus
+        if(AccountStatu.Banned){
+    res.send(AccountStatu)
+       }else{
         bcrypt.compare(data.password, result.password, (err, results) => {
           if (results === true) {
             res.send({
@@ -76,9 +77,8 @@ res.send(AccountStatu)
             res.send({ Registred: false });
           }
         });
-      }
+       }     
     }
-   
   });
 };
 

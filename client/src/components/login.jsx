@@ -1,5 +1,6 @@
 import React from "react"
 import axios from "axios"
+import Toast from "light-toast";
 class Login extends React.Component {
     constructor(props){
         super(props)
@@ -17,18 +18,19 @@ class Login extends React.Component {
         }).then(data=>{data=data.data
           console.log(data)
           if(data.Banned){
-            alert(`you are banned For ${data.Reason} until ${data.Periode}`)
+            Toast.fail(`you are banned because ${data.Reason} you will be unbanned in ${data.Periode}`,2000)
           }else{
             if(data.admin){
               this.props.admin()
             }else{
               if(data.Registred){
+                Toast.success("Success Login", 2500)
                 this.props.updatedata(data)
                 this.props.start()
-      
+       
               }else{
                 this.setState({username:"",password:""})
-               setTimeout(()=>{ alert("Check again")},100)
+               setTimeout(()=>{ Toast.fail("Check Your informations",1000)},100)
               }
             }
           }

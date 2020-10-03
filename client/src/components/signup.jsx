@@ -1,5 +1,6 @@
 import React from "react"
 import axios from "axios"
+import Toast from "light-toast";
 class Signup extends React.Component {
     constructor(props){
         super(props)
@@ -19,9 +20,10 @@ class Signup extends React.Component {
         }).then(data=>{
            console.log(data)
             if(data.data.Registred){
-                alert("Account exist")
+                Toast.fail("Account exist")
                 this.setState({username:"",password:""})
             }else{
+              Toast.success("Success Registration Please Pick A character", 1500)
               this.props.IdS(data.data.id)
               } 
         })

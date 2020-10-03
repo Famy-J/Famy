@@ -7,6 +7,7 @@ import Characters from "./chars.jsx"
 import Chat from "./chat.jsx"
 import Friends from "./Friends.jsx"
 import Invitations from "./invitations.jsx"
+import Toast from "light-toast";
 // const Endpoint="http://127.0.0.1:4001"
 
 class Simulation extends React.Component {
@@ -87,6 +88,7 @@ class Simulation extends React.Component {
       }
     }
     componentDidMount(){
+      Toast.info("Moves: \n Up : W  \n Right : D  \n Left : A \n  Down : S",5000)
       this.props.userid(this.state.id)
         axios({
           url: '/Rposition',
