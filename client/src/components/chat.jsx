@@ -16,6 +16,7 @@ class Chat extends React.Component {
             data:{from:this.props.from,message:this.state.message}
           })
     }
+    
     render() {
       return <div id="chat">
       <div className="screen">

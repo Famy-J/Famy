@@ -2,7 +2,8 @@ import React from "react";
 import Navbar from "./navbar.jsx";
 import axios from "axios";
 import { get } from "mongoose";
-import Toast from "light-toast";
+
+
 class AboutUs extends React.Component {
   constructor() {
     super();
@@ -43,10 +44,14 @@ class AboutUs extends React.Component {
       <div className="aboutus">
         {/* <Navbar /> */}
         <h1>About Us</h1>
-        <h3>description:</h3>
+        <p>Welcome to FAMY organization first social media life simulation. </p>
+        <h3>description </h3>
+        <p>Our product is basically a social media application but it looks a better way different than other social media applications</p>
         <h4>what are Mary-j Tokens ?</h4>
-        <p>description here</p>
-        <h2>development team:</h2>
+        <p> Mary-J tokens are usefull to allow users to buy real e-cards like PayPal card
+          we appreciate your time spent on connecting to our application, for this reason we allow users to gain 5 tokens per 10 minutes   
+        </p>
+        <h2>Team members</h2>
         <h4>
           <a href="https://github.com/Firas-Bchir">Firas Bchir</a> <br />
           <a href="https://github.com/alaa-lasoued">Ala lassoued</a> <br />

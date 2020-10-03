@@ -2,6 +2,7 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+
 #App {
   margin-top: -8px;
   margin-right: -8px;

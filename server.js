@@ -52,6 +52,7 @@ app.post("/login", (req, res) => {
 app.post("/register", (req, res) => {
   dbF.registerUser(req.body, res);
 });
+
 app.post("/feedbacks", async (res, req) => {
   const feedback = new dbF.Feedbacks({
     feedbacks: res.body.feedback,
@@ -76,6 +77,7 @@ app.get("/ban", async (req, res) => {
       res.send(err);
     });
 });
+
 app.post("/tokens/users", async (req, res) => {
   const update = { Balance: req.body.token };
   const filter = { AccountNumber: 25 };
@@ -107,12 +109,14 @@ app.get("/balance", async (req, res) => {
 
 app.post("/purchase", async (req, res) => {
   const update = { Balance: req.body.Balance };
-  const filter = { AccountNumber: 25 };
+  console.log(req.body)
+  const filter = { AccountNumber: req.body.id };
    await dbF.Users.findOneAndUpdate(filter, update).then((result) => {
      res.send(result);
     // Users.save(result)
   });
 });
+
 //////////////////////Socket Io
 
 const server = http.createServer(app);

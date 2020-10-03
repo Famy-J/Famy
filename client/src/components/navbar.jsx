@@ -2,7 +2,6 @@ import React from "react"
 import Shop from "./shop.jsx";
 import AboutUs from "./aboutUs.jsx";
 import Simulation from "./simulation.jsx";
-import Toast from "light-toast";
 
 class Navbar extends React.Component {
   constructor(props) {

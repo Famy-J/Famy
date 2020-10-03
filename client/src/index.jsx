@@ -6,7 +6,10 @@ import Shop from "./components/shop.jsx"
 import Simulation from "./components/simulation.jsx"
 import NavBar from "./components/navbar.jsx"
 import Logo from "./components/logo.jsx"
-import Signup0 from "./components/signup0.jsx"
+import Signup0 from "./components/signup0.jsx";
+
+
+
 class App extends React.Component {
     constructor(props){
         super(props)
@@ -48,15 +51,17 @@ class App extends React.Component {
     }
     
     render() {
-      return <div>
+      return (
+      <div>
           {this.state.displaynavbar?<NavBar />:null}
           {this.state.displaylogo?<Logo/>:null}
           {this.state.displaysignup?<Signup IdS={this.selectCharId} toogle={this.toggleLoginSignup}/>:null}
-          {this.state.displayshop?<Shop/>:null}
+          {this.state.displayshop?<Shop id={this.state.ID}/>:null}
           {this.state.displaylogin?<Login start={this.startS} toogle={this.toggleLoginSignup} updatedata={this.UpdateData}/>:null}
           {this.state.displaySimulation?<Simulation data={this.state.userdata.data}/>:null}
           {this.state.displaySignup0?<Signup0 id={this.state.ID} login={this.Mlogin}/>:null}
             </div>
+      )
     }
   }
 
