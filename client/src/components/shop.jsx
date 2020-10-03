@@ -9,10 +9,10 @@ class Avatar extends React.Component {
   render() {
     return (
 
-      
+        
         
         <div className="card" id='items'>
-
+         
           <img className="avatar_image" src={this.props.image}></img>
           <h1 className="avatar_name" id='avName'> {this.props.avatar} </h1>
           <h2 className="avatar_price" id='avPrice'>{this.props.price} MJ</h2>
@@ -89,6 +89,7 @@ class Shop extends React.Component {
       <div>
         <Token />
       <div className="shopBody">
+        <h3 id="shopName">Shop</h3>
         <div className="Row">
           {this.state.avatars.map((element, key) => {
             return (
