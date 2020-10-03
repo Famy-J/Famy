@@ -157,7 +157,9 @@ res.send()
 
 const fetchfriends=async function(id,res){
   await Users.findOne({AccountNumber:id}).then(result=>{
-    res.send(result.friends)
+    if(result!=null){
+      res.send(result.friends)
+    }
   })
   }
 
